@@ -1,0 +1,15 @@
+ <header {{#if splash}} class='splash'{{/if}}>
+        {{#unless empty}}
+        <div class='row center'>
+            {{#if splash}}
+            <img src='http://pathwayactivities.co.uk/wp-content/uploads/2016/04/Profile_avatar_placeholder_large-circle.png'>
+            {{/if}}
+            {{#if title}}
+                <h1>{{title}}</h1>
+            {{/if}}
+            {{#if subtitle}}
+            <h2>{{subtitle}}</h2>
+            {{/if}}
+        </div>
+        {{/unless}}
+    </header>

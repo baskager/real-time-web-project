@@ -1,0 +1,62 @@
+<nav>
+    <ul>
+        <li><a class="current" href="projects">Reminders</a></li>
+    </ul>
+</nav>
+<section class="filters">
+    <form class="row center" action="">
+        {{!-- <label for="search">Search</label> --}}
+        <input id="search" type="search" placeholder="search, for example: Javascript">
+        {{!-- <button>Search</button> --}}
+        {{!-- <fieldset>
+            <input type="checkbox" id="tag-check-js" value="js">
+            <label for="tag-check-js">Javascript</label>
+
+            <input type="checkbox" id="tag-check-api" value="api">
+            <label for="tag-check-js">API</label>
+            
+            <input type="checkbox" id="tag-check-design" value="design">
+            <label for="tag-check-design">Design</label>
+        </fieldset>  --}}
+    </form>
+</section>
+<main class="center" id="main">  
+    <ul class="center flex thumbnail-row">
+        {{> thumbnail 
+        img=""
+        title="ADRmeta"
+        description="Facial similarity in portraits"
+        }}
+
+        {{> thumbnail 
+        img=""
+        title="Js-api-connect"
+        description="ES6 library for easy API handlings"
+        }}
+    </ul>
+
+    {{!-- <ul class="center flex thumbnail-row">
+        {{> thumbnail 
+        img=""
+        title="Some project"
+        description="Some Description"
+        }}
+
+        {{> thumbnail 
+        img=""
+        title="Another project"
+        description="Another description"
+        }}
+    </ul> --}}
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+(function () {
+    var socket = io("127.0.0.1:3000");
+
+    socket.on('chat message', function(msg){
+        document.querySelector('#main').appendChild("<li>"+ msg +"</li>");
+    });
+});
+</script>
+<script type="text/javascript" src="static/js/search.js"></script>

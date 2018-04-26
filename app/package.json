@@ -1,0 +1,40 @@
+{
+  "name": "remind.kager.io",
+  "version": "1.0.0",
+  "description": "A personal reminder app that plugs in to messaging services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baskager/real-time-web-project.git"
+  },
+  "keywords": [
+    "remind",
+    "reminder",
+    "kager",
+    "messaging",
+    "message",
+    "real-time",
+    "socket",
+    "node"
+  ],
+  "author": "Bas Kager",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/baskager/real-time-web-project/issues"
+  },
+  "homepage": "https://github.com/baskager/real-time-web-project#readme",
+  "dependencies": {
+    "arangojs": "^6.2.3",
+    "debug": "^3.1.0",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "socket.io": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1"
+  }
+}
