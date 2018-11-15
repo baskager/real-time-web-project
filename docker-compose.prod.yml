@@ -1,0 +1,29 @@
+version: '3'
+services:
+  arango:
+    image: "arangodb:3.3"
+    container_name: reminder_arangodb
+    restart: on-failure
+    volumes:
+      - arango-data:/var/lib/arangodb3
+      - arango-apps:/var/lib/arangodb3-apps
+    ports:
+      - "8529:8529"
+    env_file:
+      - credentials.env
+  web:
+    build: .
+    container_name: reminder_webserver
+    hostname: reminder-web
+    restart: on-failure
+    depends_on:
+      - postgres
+    ports:
+      - "1511:1511"
+    command: "node server.js"
+    environment:
+      NODE_ENV: production
+
+volumes: 
+  arango-data:
+  arango-apps:
