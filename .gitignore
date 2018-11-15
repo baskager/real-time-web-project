@@ -1,3 +1,7 @@
+# Remind-server
+credentials.env
+app/config.js
+
 # Logs
 logs
 *.log
