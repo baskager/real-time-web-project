@@ -8,8 +8,8 @@ const express = require("express"),
     port = config.port || 3000,
     db = require("arangojs")();
 
-db.useBasicAuth("root", "openSesame");
-db.useDatabase("reminders");
+db.useBasicAuth(config.db.user, config.db.password);
+db.useDatabase(config.db.name);
 const collection = db.collection("chat");
 
 app.engine("handlebars", handlebars({defaultLayout: "main"}));
@@ -35,7 +35,7 @@ io.on("connection", function(socket) {
         cursor => cursor.map(doc => doc)
     ).then(
         docs => {
-            for(let doc of docs) {
+            for(let doc of docs.reverse()) {
                 io.emit("chat message", doc.message);
             }
         },
@@ -43,6 +43,7 @@ io.on("connection", function(socket) {
     ); 
 
     socket.on("chat message", function(msg){
+        debug(socket.handshake.address + ": " + msg);
         let doc = {
             timestamp: new Date(),
             message: msg
