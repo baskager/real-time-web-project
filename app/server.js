@@ -6,11 +6,13 @@ const express = require("express"),
     handlebars  = require("express-handlebars"),
     config = require("./config"),
     port = config.port || 3000,
-    db = require("arangojs")();
+    db = require("arangojs")('http://' + config.db.host + ':' + config.db.port);
 
 db.useBasicAuth(config.db.user, config.db.password);
 db.useDatabase(config.db.name);
 const collection = db.collection("chat");
+
+console.dir(db);
 
 app.engine("handlebars", handlebars({defaultLayout: "main"}));
 app.set("view engine", "handlebars");
@@ -30,6 +32,7 @@ app.get("/", function(req, res) {
 io.on("connection", function(socket) {
     debug("A user connected");
     io.emit("chat message", "Server: You are connected");
+
 
     collection.all().then(
         cursor => cursor.map(doc => doc)

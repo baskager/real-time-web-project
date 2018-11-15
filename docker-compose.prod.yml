@@ -17,7 +17,7 @@ services:
     hostname: reminder-web
     restart: on-failure
     depends_on:
-      - postgres
+      - arango
     ports:
       - "1511:1511"
     command: "node server.js"

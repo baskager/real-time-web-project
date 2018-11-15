@@ -22,7 +22,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
     $(function () {
-      var socket = io('127.0.0.1:3000');
+      var socket = io('127.0.0.1:1511');
       $('form').submit(function(){
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
