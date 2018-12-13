@@ -1,9 +1,5 @@
-<nav>
-    <ul>
-        <li><a class="current" href="projects">Reminders</a></li>
-    </ul>
-</nav>
-<section class="filters">
+<main class="center" id="main">  
+<section class="filters center flex">
     <form class="row center" action="">
         {{!-- <label for="search">Search</label> --}}
         <input id="search" type="search" placeholder="search, for example: Javascript">
@@ -20,7 +16,6 @@
         </fieldset>  --}}
     </form>
 </section>
-<main class="center" id="main">  
     <ul class="center flex thumbnail-row">
         {{> thumbnail 
         img=""
@@ -34,20 +29,6 @@
         description="ES6 library for easy API handlings"
         }}
     </ul>
-
-    {{!-- <ul class="center flex thumbnail-row">
-        {{> thumbnail 
-        img=""
-        title="Some project"
-        description="Some Description"
-        }}
-
-        {{> thumbnail 
-        img=""
-        title="Another project"
-        description="Another description"
-        }}
-    </ul> --}}
 </main>
 <script src="/socket.io/socket.io.js"></script>
 <script>

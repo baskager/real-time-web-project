@@ -20,12 +20,12 @@ app.set("view engine", "handlebars");
 // Define directory from which static files are served
 app.use(express.static("public"));
 
-app.get("/reminders", function(req, res) {
+app.get("/", function(req, res) {
     res.render("reminders");
 });
 
 
-app.get("/", function(req, res) {
+app.get("/chat", function(req, res) {
     res.sendFile(__dirname + "/index.html");
 });
 

@@ -1,0 +1,43 @@
+/* .thumbnail-row:first-child {
+    margin-top: 8em; 
+} */
+.thumbnail {
+
+  &:hover,
+  &:focus {
+
+  }
+  &.faded {
+    opacity: 0.5;
+  }
+  &.show {
+    animation: 0.4s ease-out 0s 1 fadeInHalf;
+  }
+  &.hide {
+    // animation: 0.4s ease-out 0s 1 fadeOutHalf;
+    display: none;
+  }
+  .image-wrap {
+
+    &:hover,
+    &:focus {
+
+    }
+  }
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  .caption {
+
+  }
+  h3 {
+
+  }
+  p {
+
+  }
+  .tags {
+    
+  }
+}
