@@ -1,8 +1,10 @@
 const { watch, series, parallel, src, dest } = require('gulp');
 const imagemin = require("gulp-imagemin");
 const uglify = require("gulp-uglify");
-const sass = require("gulp-sass");
+const sass = require('gulp-sass');
 const cleanCSS = require("gulp-clean-css");
+
+sass.compiler = require('node-sass');
 
 const source = "./src";
 const destination = "./public/static";
@@ -45,8 +47,8 @@ function minifyJs() {
 
 // Compile the sass to css and move the file to the location the webserver expects
 function compileSass() {
-  return src(source + "/sass/*.scss")
-    .pipe(sass().on("error", sass.logError))
+  return src(source + "/sass/app.scss")
+    .pipe(sass({ noCache: true }).on("error", sass.logError))
     .pipe(dest(destination + "/css"));
 };
 
@@ -56,8 +58,7 @@ function minifyCss() {
     .pipe(dest(destination + "/css/"));
 };
 
+watch(source + "/**/*", series(parallel(copyFonts, copyImages, copyJs, compileSass)));
 
 exports.default = series(parallel(copyFonts, copyImages, copyJs, compileSass));
 exports.build = series(parallel(copyFonts, compressImages, minifyJs, compileSass), minifyCss);
-
-watch(source + "/**/*", exports.default);
