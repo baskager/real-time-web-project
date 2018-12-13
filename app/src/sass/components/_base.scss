@@ -21,6 +21,10 @@ p {
   font-size: 1.2rem;
   line-height: 1.618em;
 }
+ul {
+  margin: 0;
+  padding: 0;
+}
 .container {
   margin: 0 auto;
   max-width: 80rem;
@@ -36,13 +40,11 @@ ul {
   li {
     padding-left: 0.4em;
     line-height: 1.618em;
-    font-size: 1.2rem;
   }
 }
 a {
   color: $link-color;
   text-decoration: none;
-  border-bottom: 0.2em solid;
 }
 a:hover,
 a:focus {
@@ -50,4 +52,12 @@ a:focus {
 }
 a:focus {
   background: $link-focus-background;
+}
+.flex {
+  display: flex;
+  flex-direction: row;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
 }

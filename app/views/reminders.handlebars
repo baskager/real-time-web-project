@@ -1,31 +1,23 @@
-<main class="center" id="main">  
-<section class="filters center flex">
-    <form class="row center" action="">
-        {{!-- <label for="search">Search</label> --}}
-        <input id="search" type="search" placeholder="search, for example: Javascript">
-        {{!-- <button>Search</button> --}}
-        {{!-- <fieldset>
-            <input type="checkbox" id="tag-check-js" value="js">
-            <label for="tag-check-js">Javascript</label>
+<header>
+    <h1>REMINDERS</h1>
+</header>
 
-            <input type="checkbox" id="tag-check-api" value="api">
-            <label for="tag-check-js">API</label>
-            
-            <input type="checkbox" id="tag-check-design" value="design">
-            <label for="tag-check-design">Design</label>
-        </fieldset>  --}}
-    </form>
-</section>
-    <ul class="center flex thumbnail-row">
-        {{> thumbnail 
+<main class="center container" id="main">  
+    <section class="filters center flex">
+        <form class="row center" action="">
+            <input id="search" type="search" placeholder="Search in your reminders">
+        </form>
+    </section>
+    <ul class="center flex card-caroussel search-items-row">
+        {{> reminder 
         img=""
-        title="ADRmeta"
+        title="Pick up some eggs on your way home"
         description="Facial similarity in portraits"
         }}
 
-        {{> thumbnail 
+        {{> reminder 
         img=""
-        title="Js-api-connect"
+        title="You forgot your headphones, pick them up today"
         description="ES6 library for easy API handlings"
         }}
     </ul>

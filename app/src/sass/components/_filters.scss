@@ -1,0 +1,17 @@
+.filters{
+  form {
+    width: 100%;
+    input[type="search"] {
+      width: 100%;
+      opacity: 0.8;
+      padding: 1em;
+      border: 0;
+      transition: .3s ease;
+      font-size: 1em;
+      &:focus {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+  }
+}
