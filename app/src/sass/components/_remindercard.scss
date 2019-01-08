@@ -1,0 +1,48 @@
+.reminder {
+  margin-right: 2em;
+  position: relative;
+  outline: 0;
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: inline-block;
+  list-style: none;
+  width: 20em;
+  height: 15em;
+  
+  .maininfo {
+    background: #fff;
+    height: 100%;
+    overflow: auto;
+  }
+  .metainfo {
+    display: flex;  
+    background: rgba(255,255,255,0.75);
+    height: 4em;
+    overflow: hidden;
+    .metatext {
+      display: flex;
+      flex-direction: column;
+      color: #000;
+      line-height: 1em;
+      padding-top: 0.6em;
+      .name {
+        font-weight: bold;
+      }
+      .date {
+        font-size: 0.8em;
+      }
+    }
+    .avatar {
+      height: 100%;
+      width: auto;
+      max-height: 4em;
+      img {
+        // background: gray;
+        margin: 5% 0 0 10%;
+        width: 70%;
+        height: auto;
+        border-radius: 50%;
+      }
+    }
+  }
+}

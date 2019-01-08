@@ -7,13 +7,12 @@
 */
 (function () {
   const input = document.querySelector('#search');
-  const mainContainer = document.querySelector('#main');
-  const thumbnails = document.querySelectorAll('.thumbnail');
-  const thumbnailRows = document.querySelectorAll('.thumbnail-row');
+  const search_items = document.querySelectorAll('.searchable');
+  const search_items_container = document.querySelectorAll('.search-items-row');
 
   input.addEventListener("focus", event => {
-      for(var i = 0; i <= thumbnails.length -1; i++ ) {
-          thumbnails[i].classList.add("faded");
+      for(var i = 0; i <= search_items.length -1; i++ ) {
+          search_items[i].classList.add("faded");
       }
   })
 
@@ -24,13 +23,12 @@
           main.removeChild(searchResults[i]);
       }
 
-      for(var i = 0; i <= thumbnailRows.length -1; i++ ) {
-          thumbnailRows[i].classList.remove("hide");
+      for(var i = 0; i <= search_items_container.length -1; i++ ) {
+          search_items_container[i].classList.remove("hide");
       }
 
-
-      for(var i = 0; i <= thumbnails.length -1; i++ ) {
-          thumbnails[i].classList.remove("faded");
+      for(var i = 0; i <= search_items.length -1; i++ ) {
+          search_items[i].classList.remove("faded");
       }
   })
 
@@ -38,15 +36,14 @@
       filter = input.value.toUpperCase();
       results = 0;
 
-      for(var i = 0; i <= thumbnails.length -1; i++ ) {
+      for(var i = 0; i <= search_items.length -1; i++ ) {
 
-          var thumbnail = thumbnails[i];
+          var thumbnail = search_items[i];
           var title = thumbnail.querySelector('#title').innerText.toUpperCase();
-          // var tags = thumbnail.querySelectorAll('#tags');
 
-          for(var a = 0; a <= tags.length -1; a++ ) {
-              console.log(tags[a].innerText);
-          }
+        //   for(var a = 0; a <= tags.length -1; a++ ) {
+        //       console.log(tags[a].innerText);
+        //   }
 
           if(title.indexOf(filter) > -1 || title.indexOf(filter) > -1) {
               thumbnail.classList.remove("hide", "faded");
@@ -61,9 +58,9 @@
           // thumbnailRows[i].classList.add("hide");
       }
       if(results === 1) {
-          thumbnailRows[0].classList.add("oneResult");
+          search_items_container[0].classList.add("oneResult");
       } else {
-          thumbnailRows[0].classList.remove("oneResult");
+          search_items_container[0].classList.remove("oneResult");
       }
 
 
