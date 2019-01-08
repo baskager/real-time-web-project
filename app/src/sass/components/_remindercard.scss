@@ -15,21 +15,34 @@
     overflow: auto;
   }
   .metainfo {
-    display: flex;
-    overflow: none;
+    display: flex;  
     background: rgba(255,255,255,0.75);
     height: 4em;
-    b {
-      padding-top: 0.75em;
-      padding-left: 1em;
+    overflow: hidden;
+    .metatext {
+      display: flex;
+      flex-direction: column;
+      color: #000;
+      line-height: 1em;
+      padding-top: 0.6em;
+      .name {
+        font-weight: bold;
+      }
+      .date {
+        font-size: 0.8em;
+      }
     }
     .avatar {
-      height: 80%;
-      margin-top: 2%;
-      margin-left: 2%;
-      width: 3em;
-      background: gray;
-      border-radius: 50%;
+      height: 100%;
+      width: auto;
+      max-height: 4em;
+      img {
+        // background: gray;
+        margin: 5% 0 0 10%;
+        width: 70%;
+        height: auto;
+        border-radius: 50%;
+      }
     }
   }
 }

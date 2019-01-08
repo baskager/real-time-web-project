@@ -95,7 +95,8 @@ header {
     color: rgba(255, 255, 255, 0.5);
     font-weight: medium;
     margin-bottom: 0;
-    padding: 0; }
+    padding: 0;
+    text-transform: uppercase; }
 
 /* .thumbnail-row:first-child {
     margin-top: 8em; 
@@ -110,7 +111,7 @@ header {
   position: relative;
   box-sizing: border-box;
   overflow: auto;
-  transition: .2s ease; }
+  transition: .15s ease; }
   .card.faded {
     opacity: 0.5; }
     .card.faded:hover {
@@ -118,6 +119,7 @@ header {
   .card.show {
     animation: 0.4s ease-out 0s 1 fadeInHalf; }
   .card.hide {
+    animation: 0.4s ease-out 0s 1 fadeOutHalf;
     display: none; }
   .card a {
     color: #000; }
@@ -153,19 +155,28 @@ header {
     overflow: auto; }
   .reminder .metainfo {
     display: flex;
-    overflow: none;
     background: rgba(255, 255, 255, 0.75);
-    height: 4em; }
-    .reminder .metainfo b {
-      padding-top: 0.75em;
-      padding-left: 1em; }
+    height: 4em;
+    overflow: hidden; }
+    .reminder .metainfo .metatext {
+      display: flex;
+      flex-direction: column;
+      color: #000;
+      line-height: 1em;
+      padding-top: 0.6em; }
+      .reminder .metainfo .metatext .name {
+        font-weight: bold; }
+      .reminder .metainfo .metatext .date {
+        font-size: 0.8em; }
     .reminder .metainfo .avatar {
-      height: 80%;
-      margin-top: 2%;
-      margin-left: 2%;
-      width: 3em;
-      background: gray;
-      border-radius: 50%; }
+      height: 100%;
+      width: auto;
+      max-height: 4em; }
+      .reminder .metainfo .avatar img {
+        margin: 5% 0 0 10%;
+        width: 70%;
+        height: auto;
+        border-radius: 50%; }
 
 .filters form {
   width: 100%; }
@@ -174,7 +185,7 @@ header {
     opacity: 0.8;
     padding: 1em;
     border: 0;
-    transition: .3s ease;
+    transition: .15s ease;
     font-size: 1em; }
     .filters form input[type="search"]:focus {
       opacity: 1;
