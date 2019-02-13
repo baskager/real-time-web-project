@@ -3,25 +3,50 @@ const express = require("express"),
     http = require("http").Server(app),
     debug = require("debug")("remind-server"),
     io = require("socket.io")(http),
-    handlebars  = require("express-handlebars"),
+    exphbs = require("express-handlebars"),
     config = require("./config"),
     port = config.port || 3000,
-    db = require("arangojs")('http://' + config.db.host + ':' + config.db.port);
+    db = require("arangojs")("http://" + config.db.host + ":" + config.db.port),
+    moment = require("moment");    
 
+const handlebars = exphbs.create({
+    helpers: {
+        // Allows comparing two values, like if(a===b)
+        equal: function(a, b, options) {
+            if (a === b) {
+                return options.fn(this);
+            }
+            return options.inverse(this);
+        },
+        formatDate: function(date) {
+            return moment(date).format("DD-MM-YYYY");
+        }
+    },
+    defaultLayout: "main"
+});
 db.useBasicAuth(config.db.user, config.db.password);
 db.useDatabase(config.db.name);
-const collection = db.collection("chat");
+const collection = db.collection("reminders");
 
 console.dir(db);
 
-app.engine("handlebars", handlebars({defaultLayout: "main"}));
+app.engine("handlebars", handlebars.engine);
 app.set("view engine", "handlebars");
 
 // Define directory from which static files are served
 app.use(express.static("public"));
 
 app.get("/", function(req, res) {
-    res.render("home");
+    collection.all().then(
+        cursor => cursor.map(doc => doc)
+    ).then(
+        docs => {
+            res.render("home", {
+                reminders: docs
+            });
+        },
+        err => io.emit("reminder", err)
+    ); 
 });
 
 
@@ -39,10 +64,11 @@ io.on("connection", function(socket) {
     ).then(
         docs => {
             for(let doc of docs.reverse()) {
-                io.emit("chat message", doc.message);
+                console.dir(doc);
+                io.emit("reminder", doc);
             }
         },
-        err => io.emit("chat message", "Loading chat history failed: " + err.message)
+        err => io.emit("reminder", err)
     ); 
 
     socket.on("chat message", function(msg){
