@@ -1,16 +1,20 @@
 .filters{
   form {
     width: 100%;
+    padding-left: 2em;
     input[type="search"] {
-      width: 100%;
+      width: 20%;
+      text-align: left;
       opacity: 0.8;
       padding: 1em;
       border: 0;
-      transition: .15s ease;
+      transition: .25s ease;
       font-size: 1em;
       &:focus {
         opacity: 1;
-        transform: scale(1.05);
+        width: 35%;
+        transform: scale(1.25);
+        transform-origin:left;
       }
     }
   }

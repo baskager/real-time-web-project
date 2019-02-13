@@ -8,6 +8,10 @@
   list-style: none;
   width: 20em;
   height: 15em;
+
+  &.hide {
+    margin-right: 0;
+  }
   
   .maininfo {
     background: #fff;
