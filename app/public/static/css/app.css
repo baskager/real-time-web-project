@@ -45,10 +45,6 @@ p {
   font-size: 1.2rem;
   line-height: 1.618em; }
 
-ul {
-  margin: 0;
-  padding: 0; }
-
 .container {
   margin: 0 auto;
   max-width: 80rem;
@@ -111,16 +107,22 @@ header {
   position: relative;
   box-sizing: border-box;
   overflow: auto;
-  transition: .15s ease; }
+  transition: .25s ease;
+  padding-left: 0;
+  width: 100%;
+  transform: scale(1); }
   .card.faded {
-    opacity: 0.5; }
+    opacity: 0.25; }
     .card.faded:hover {
       opacity: 1; }
   .card.show {
     animation: 0.4s ease-out 0s 1 fadeInHalf; }
   .card.hide {
     animation: 0.4s ease-out 0s 1 fadeOutHalf;
-    display: none; }
+    width: 0%;
+    transform: scale(0.75);
+    z-index: -99;
+    transform-origin: center; }
   .card a {
     color: #000; }
   .card:hover {
@@ -149,6 +151,8 @@ header {
   list-style: none;
   width: 20em;
   height: 15em; }
+  .reminder.hide {
+    margin-right: 0; }
   .reminder .maininfo {
     background: #fff;
     height: 100%;
@@ -179,14 +183,18 @@ header {
         border-radius: 50%; }
 
 .filters form {
-  width: 100%; }
+  width: 100%;
+  padding-left: 2em; }
   .filters form input[type="search"] {
-    width: 100%;
+    width: 20%;
+    text-align: left;
     opacity: 0.8;
     padding: 1em;
     border: 0;
-    transition: .15s ease;
+    transition: .25s ease;
     font-size: 1em; }
     .filters form input[type="search"]:focus {
       opacity: 1;
-      transform: scale(1.05); }
+      width: 35%;
+      transform: scale(1.25);
+      transform-origin: left; }
