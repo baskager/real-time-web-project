@@ -2,76 +2,119 @@
 * Live search filter
 *
 * @author  Bas Kager
-* @version 1.0
-* @since   25-04-2018
+* @version 1.1
+* @since   13-02-2019
 */
 (function () {
-  const input = document.querySelector('#search');
-  const search_items = document.querySelectorAll('.searchable');
-  const search_items_container = document.querySelectorAll('.search-items-row');
+    // The input element of the search box
+    const input = document.querySelector("#search");
 
-  input.addEventListener("focus", event => {
-      for(var i = 0; i <= search_items.length -1; i++ ) {
-          search_items[i].classList.add("faded");
-      }
-  })
+    // All of the items to search against
+    const search_items = document.querySelectorAll(".searchable");
 
-  input.addEventListener("blur", event => {
-      var searchResults = document.querySelectorAll('.searchResult');
+    // Gets the corresponding keycode on a "keypress" event
+    // (for compatibility with older browsers)
+    function getKeyFromEvent(event) {
+        return event.which || event.keyCode;
+    }
 
-      for(var i = 0; i <= searchResults.length -1; i++ ) {
-          main.removeChild(searchResults[i]);
-      }
+    // Checks if there is a match with the given query in a specific thumbnail
+    function isMatchInThumbnail(query, searchableRecords) {
+        for (var j = 0; j <= searchableRecords.length - 1; j++) {
+            var keyword = searchableRecords[j];
+            // Check if query matches this keyword
+            if (keyword.indexOf(query) > -1) return true;
+        }
+        return false;
+    }
 
-      for(var i = 0; i <= search_items_container.length -1; i++ ) {
-          search_items_container[i].classList.remove("hide");
-      }
+    // Search all the "search items" with the given query
+    function search(query) {
+        if (query !== "") {
+            // Loop through each thumbnail
+            for (var i = 0; i <= search_items.length - 1; i++) {
+                // Fetch the current thumbnail
+                var thumbnail = search_items[i];
 
-      for(var i = 0; i <= search_items.length -1; i++ ) {
-          search_items[i].classList.remove("faded");
-      }
-  })
+                // Define which entries of the thumbnail should be searched
+                var title = thumbnail.querySelector("#title").innerText.toUpperCase();
+                var postedBy = thumbnail.querySelector("#name").innerText.toUpperCase();
+                var date = thumbnail.querySelector("#date").innerText.toUpperCase();
 
-  input.addEventListener("input", event => {
-      filter = input.value.toUpperCase();
-      results = 0;
+                var searchableRecords = [title, postedBy, date];
 
-      for(var i = 0; i <= search_items.length -1; i++ ) {
+                // Check for a match in this thumbnail
+                var match = isMatchInThumbnail(query, searchableRecords);
+                
 
-          var thumbnail = search_items[i];
-          var title = thumbnail.querySelector('#title').innerText.toUpperCase();
+                if (match === true) showThumbnail(thumbnail);
+                else hideThumbnail(thumbnail);
+            }
+        } else resetApplicationState();
+    }
 
-        //   for(var a = 0; a <= tags.length -1; a++ ) {
-        //       console.log(tags[a].innerText);
-        //   }
+    // Reset the entire application state
+    function resetApplicationState() {
+        input.blur();
+        showAllThumbnails();
+    }
 
-          if(title.indexOf(filter) > -1 || title.indexOf(filter) > -1) {
-              thumbnail.classList.remove("hide", "faded");
-              results++;
-          } else {
-              thumbnail.classList.add("hide");
-          }
+    // Show all thumbnails
+    function showAllThumbnails() {
+        for (var i = 0; i <= search_items.length - 1; i++) {
+            var thumbnail = search_items[i];
+            showThumbnail(thumbnail);
+        }
+    }
+    // Show a specific thumbnail
+    function showThumbnail(thumbnail) {
+        thumbnail.classList.remove("hide", "faded");
+    }
 
-          if(filter === "") {
-              thumbnail.classList.add("faded");
-          }
-          // thumbnailRows[i].classList.add("hide");
-      }
-      if(results === 1) {
-          search_items_container[0].classList.add("oneResult");
-      } else {
-          search_items_container[0].classList.remove("oneResult");
-      }
+    // Fade the thubmnails
+    function fadeAllThumbnails() {
+        for (var i = 0; i <= search_items.length - 1; i++) {
+            search_items[i].classList.add("faded");
+        }
+    }
+
+    // Hide a thumbnail
+    function hideThumbnail(thumbnail) {
+        thumbnail.classList.add("hide");
+    }
+
+    // Fade search items when the input gets focus
+    input.addEventListener("focus", event => {
+        fadeAllThumbnails();
+    });
+
+    // Perform a search action on each input
+    input.addEventListener("input", event => {
+        var query = input.value.toUpperCase();
+        search(query);
+    });
+
+    // General keypress actions
+    document.addEventListener("keydown", function (event) {
+        var key = getKeyFromEvent(event);
+        
+        // When a user starts typing, automatically focus on the search input box
+        if (key > 63 && key < 123 ||
+            key === 8 && input.value != "" ||
+            key > 47 && key < 58) {
+            input.focus();
+        }
+    });
+
+    // Actions for keypresses when focused in the searchbox
+    input.addEventListener("keydown", function (event) {
+        var key = getKeyFromEvent(event);
+        // Remove focus from input element when "enter" or "escape" is pressed
+        if (key === 27 || key === "Escape" || key === 13) {
+            event.preventDefault();
+            input.blur();
+        }
+    });
 
 
-      // var newRow = document.createElement("section");
-      // newRow.classList.add("center", "flex", "thumbnail-row", "searchResult", "oneResult");
-
-      // var clone = thumbnails[1].cloneNode(true);
-      // clone.classList.remove("faded");
-
-      // newRow.appendChild(clone);
-
-      // mainContainer.appendChild(newRow);
-  })
 })();
