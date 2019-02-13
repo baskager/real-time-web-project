@@ -8,8 +8,8 @@
                 <img src="{{avatar}}" class="avatar"/>
             </div>
             <div class ="metatext">
-                <span class="name">{{postedBy}}</span>
-                <span class="date">posted on {{postedOn}}</span>
+                <span class="name" id="name">{{postedBy}}</span>
+                <span class="date">posted on <span id="date">{{formatDate postedOn}}</span></span>
             </div>
         </div>
     </a>

@@ -1,36 +1,30 @@
-{{> header title="reminder"}}
+{{> header title="reminders"}}
 
 <main class="center container" id="main">  
     <section class="filters center flex">
         <form class="row center" action="">
-            <input id="search" type="search" placeholder="Search in your reminders">
+            <input id="search" type="search" placeholder="Search in your reminders.">
         </form>
     </section>
     <ul class="center flex card-caroussel search-items-row">
-        {{> reminder 
-        avatar="https://kager.io/static/img/baskager-small.jpg"
-        title="Pick up some eggs on your way home"
-        description="Facial similarity in portraits"
-        postedBy="Bas Kager"
-        postedOn="14-10-2018"
-        }}
-
-        {{> reminder 
-        avatar="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.infowars.com%2Fwp-content%2Fuploads%2F2018%2F10%2F1539689593718.jpg&f=1"
-        title="You forgot your headphones, pick them up today"
-        description="ES6 library for easy API handlings"
-        postedBy="John Doe"
-        postedOn="16-10-2018"
-        }}
+        {{#each reminders}}
+            {{> reminder 
+            avatar=avatar
+            title=title
+            postedBy=postedBy
+            postedOn=timestamp
+            }}
+        {{/each}}
     </ul>
+    <ul id="messages"></ul>
 </main>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-(function () {
-    var socket = io("127.0.0.1:3000");
-
-    socket.on('chat message', function(msg){
-        document.querySelector('#main').appendChild("<li>"+ msg +"</li>");
+$(function () {
+    var socket = io('127.0.0.1:1511');
+    socket.on('reminder', function(reminder){
+        $('#messages').append($('<li>').text(reminder.title));
     });
 });
 </script>
