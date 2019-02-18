@@ -21,9 +21,9 @@
     // Checks if there is a match with the given query in a specific thumbnail
     function isMatchInThumbnail(query, searchableRecords) {
         for (var j = 0; j <= searchableRecords.length - 1; j++) {
-            var keyword = searchableRecords[j];
+            var record = searchableRecords[j];
             // Check if query matches this keyword
-            if (keyword.indexOf(query) > -1) return true;
+            if (record.indexOf(query) > -1) return true;
         }
         return false;
     }
