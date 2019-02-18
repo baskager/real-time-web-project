@@ -174,12 +174,11 @@ header {
         font-size: 0.8em; }
     .reminder .metainfo .avatar {
       height: 100%;
-      width: auto;
-      max-height: 4em; }
+      margin-right: 0.2em; }
       .reminder .metainfo .avatar img {
-        margin: 5% 0 0 10%;
-        width: 70%;
-        height: auto;
+        height: 90%;
+        width: auto;
+        padding: 5%;
         border-radius: 50%; }
 
 .filters form {
