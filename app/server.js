@@ -9,7 +9,8 @@ const express = require("express"),
     db = require("arangojs")("http://" + config.db.host + ":" + config.db.port),
     moment = require("moment"),
     { Client, RichEmbed } = require("discord.js"),
-    discordclient = new Client();
+    discordclient = new Client(),
+    components = require("./components")(config);
 
 function createReminder(title, avatar, postedBy, client, due) {
     let doc = {
