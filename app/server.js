@@ -7,7 +7,89 @@ const express = require("express"),
     config = require("./config"),
     port = config.port || 3000,
     db = require("arangojs")("http://" + config.db.host + ":" + config.db.port),
-    moment = require("moment");    
+    moment = require("moment"),
+    { Client, RichEmbed } = require("discord.js"),
+    discordclient = new Client();
+
+function createReminder(title, avatar, postedBy, client, due) {
+    let doc = {
+        title: title,
+        avatar: avatar,
+        postedBy: postedBy,
+        timestamp: moment(),
+        client,
+        due
+    };
+
+    return collection.save(doc);
+}
+
+discordclient.on("ready", () => {
+  console.log(`Logged in as ${discordclient.user.tag}!`);
+});
+
+discordclient.on("message", msg => {
+    console.dir(msg.content.indexOf("to") !== 0);
+    if( msg.content.substr(0,6) === "remind" && 
+        msg.author.bot === false &&
+        msg.content.indexOf("to") !== 0) {
+        if (msg.mentions.users.size === 1) {    
+                    let mentionedUser = msg.mentions.users.values().next().value;
+
+                    let reminder = msg.content.slice(msg.content.indexOf("to ") + "to ".length);
+                    reminder = reminder.charAt(0).toUpperCase() + reminder.slice(1);
+                    
+                    console.log(reminder);
+
+                    createReminder(reminder, msg.author.avatarURL, mentionedUser.username, "DISCORDBOT", "23-03-2019").then(
+                        meta => {
+                            debug("Document saved:", meta._rev);
+
+                            const embed = new RichEmbed()
+                            // Set the title of the field
+                            .setTitle("Great success!")
+                            // Set the color of the embed
+                            .setColor(0x00FF00)
+                            // Set the main content of the embed
+                            .setDescription("reminding: " + mentionedUser.username + " to " + reminder);
+
+                            // Send the embed to the same channel as the message
+                            msg.reply(embed);
+                        },
+                        err => {
+                            debug("Failed to save document:", err);
+
+                            const embed = new RichEmbed()
+                            // Set the title of the field
+                            .setTitle("There was an unexpected error")
+                            // Set the color of the embed
+                            .setColor(0xFF0000)
+                            // Set the main content of the embed
+                            .setDescription("Please try reminding " + mentionedUser.username + " again");
+                            // Send the embed to the same channel as the message
+                            msg.reply(embed);
+                        }
+                    );
+        } else {
+            const embed = new RichEmbed()
+            // Set the title of the field
+            .setTitle("Reminder could not understand that instruction, please use the following format:")
+            // Set the color of the embed
+            .setColor(0xFF0000)
+            // Set the main content of the embed
+            .setDescription("remind @username to [YOUR REMINDER] on [DUE DATE]");
+            // Send the embed to the same channel as the message
+            msg.reply(embed);
+        }
+    }
+    
+    // console.dir(msg.mentions.users.values().next());
+    // if (msg.content.substr(0,6) === "remind") { 
+    //     msg.reply("Reminding ");
+    // }
+});
+
+discordclient.login(config.discord.bot.token);
 
 const handlebars = exphbs.create({
     helpers: {
@@ -26,18 +108,19 @@ const handlebars = exphbs.create({
 });
 db.useBasicAuth(config.db.user, config.db.password);
 db.useDatabase(config.db.name);
-const collection = db.collection("reminders");
 
-console.dir(db);
+const collection = db.collection("reminder");
 
 app.engine("handlebars", handlebars.engine);
 app.set("view engine", "handlebars");
 
 // Define directory from which static files are served
 app.use(express.static("public"));
+app.use(express.json());
+app.io = io;
 
 app.get("/", function(req, res) {
-    collection.all().then(
+    db.query("FOR r IN reminder SORT r.timestamp DESC RETURN r").then(
         cursor => cursor.map(doc => doc)
     ).then(
         docs => {
@@ -45,47 +128,42 @@ app.get("/", function(req, res) {
                 reminders: docs
             });
         },
-        err => io.emit("reminder", err)
+        err => debug(err)
     ); 
-});
-
-
-app.get("/chat", function(req, res) {
-    res.sendFile(__dirname + "/index.html");
 });
 
 io.on("connection", function(socket) {
     debug("A user connected");
-    io.emit("chat message", "Server: You are connected");
-
-
-    collection.all().then(
-        cursor => cursor.map(doc => doc)
-    ).then(
-        docs => {
-            for(let doc of docs.reverse()) {
-                console.dir(doc);
-                io.emit("reminder", doc);
-            }
-        },
-        err => io.emit("reminder", err)
-    ); 
-
-    socket.on("chat message", function(msg){
-        debug(socket.handshake.address + ": " + msg);
+    app.post("/webhook/create", function(req, res) {
         let doc = {
-            timestamp: new Date(),
-            message: msg
+            title: req.body.title,
+            avatar: req.body.avatar,
+            postedBy: req.body.postedBy,
+            timestamp: moment()
         };
+	
         collection.save(doc).then(
-            () => io.emit("chat message", doc.message),
-            err =>  io.emit("chat message", "Failed to send message. Error: " + err)
+            meta => {
+                debug("Document saved:", meta._rev);
+                
+                req.app.io.emit("reminder", doc);
+                res.status(200).send();
+            },
+            err => {
+                debug("Failed to save document:", err);
+                res.status(500).send();
+            }
         );
+
     });
 
     socket.on("disconnect", function(){
         debug("A user disconnected");
     });
+});
+
+app.get("/chat", function(req, res) {
+    res.sendFile(__dirname + "/index.html");
 });
 
 // app.get("/createdb", function(req, res) {
