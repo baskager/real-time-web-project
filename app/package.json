@@ -30,6 +30,7 @@
   "dependencies": {
     "arangojs": "^6.9.0",
     "debug": "^3.2.6",
+    "discord.js": "^11.4.2",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
     "moment": "^2.23.0",
