@@ -9,7 +9,12 @@
             </div>
             <div class ="metatext">
                 <span class="name" id="name">{{postedBy}}</span>
-                <span class="date">posted on <span id="date">{{formatDate postedOn}}</span></span>
+                <span class="date"><b>posted on:</b> <span id="date">{{formatDate postedOn}}</span></span>
+                {{#if due}}
+                <span class="date"><b>due date:</b> <span id="date">{{formatDate due}}</span></span>
+                {{else}}
+                <span class="date"><b>due date:</b> <span id="date">none</span></span>
+                {{/if}}
             </div>
         </div>
     </a>
