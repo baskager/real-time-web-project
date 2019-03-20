@@ -53,7 +53,14 @@ module.exports = function(config, cache, environment, debug) {
     get(id) {
       debug("Not implemented yet");
     }
-
+    /**
+     * Returns all reminders from the database
+     *
+     * @since: 20-03-2019
+     * @author: Bas Kager
+     *
+     * @returns {Promise} Promise containing the query results
+     **/
     getAll() {
       debug("Getting all reminders from database");
       return this.db.query("FOR r IN reminder SORT r.due DESC RETURN r").then(

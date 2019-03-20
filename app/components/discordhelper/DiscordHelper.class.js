@@ -17,7 +17,7 @@ module.exports = function(config, cache, environment, debug) {
      * @since: 14-08-2018
      * @author: Bas Kager
      *
-     * @param {Object} handlebars Handlebars template engine object
+     * @param {Object} reminderDAO The Data Access Object for reminders
      *
      * @returns {void}
      */
@@ -26,7 +26,7 @@ module.exports = function(config, cache, environment, debug) {
       this.reminderDAO = reminderDAO;
     }
     /**
-     * Logs in to a discord bot with a token
+     * Loads the triggers that define the interaction between discord and this application
      *
      * @since: 14-08-2018
      * @author: Bas Kager

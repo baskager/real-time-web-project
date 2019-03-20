@@ -1,7 +1,7 @@
 /**
  * Function that loads custom libraries, feeds library with the relevant config, environment and debugger.
  *
- * @since: 12-08-2018
+ * @since: 20-03-2019
  * @author: Bas Kager
  */
 module.exports = function(config, debug) {
