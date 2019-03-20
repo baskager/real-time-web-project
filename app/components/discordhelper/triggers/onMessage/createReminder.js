@@ -15,8 +15,6 @@ module.exports = function createReminder(msg, debug, reminderDAO) {
         let title = msg.content.slice(msg.content.lastIndexOf(" to ") + " to ".length);
         title = title.charAt(0).toUpperCase() + title.slice(1);
 
-        // debug(title);
-
         let duedate = null;
         // Check if the author indicated a due date
         if(title.lastIndexOf(" on ") > -1) {
@@ -52,16 +50,21 @@ module.exports = function createReminder(msg, debug, reminderDAO) {
     function createReminder(title, msg, mentionedUser, duedate) {
       reminderDAO.create(title, msg.author.avatarURL, mentionedUser.username, "DISCORDBOT", duedate).then(
         meta => {
-            debug("Document saved:", meta._rev);
+          debug("Document saved:", meta._rev);
 
-            // Reply with a success embedded message
+          // Reply with a success embedded message
+          if(moment(duedate).isValid()) {
+            msg.reply(createSuccessEmbed("reminding: " + mentionedUser.username + " to " + title + 
+                                          " on " + moment(duedate).format("DD-MM-YYYY")));
+          } else {
             msg.reply(createSuccessEmbed("reminding: " + mentionedUser.username + " to " + title));
+          }
         },
         err => {
-            debug("Failed to save document:", err);
+          debug("Failed to save document:", err);
 
-            // Reply with an error embedded message
-            msg.reply(createErrorEmbed("Please try reminding " + mentionedUser.username + " again"));
+          // Reply with an error embedded message
+          msg.reply(createErrorEmbed("Please try reminding " + mentionedUser.username + " again"));
         }
       );
     }
