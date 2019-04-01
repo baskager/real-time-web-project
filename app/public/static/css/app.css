@@ -156,8 +156,6 @@ header {
     transform: scale(0.75);
     z-index: -99;
     transform-origin: center; }
-  .card a {
-    color: #000; }
   .card a.clickable-wrap {
     flex-direction: column;
     box-sizing: border-box;
@@ -179,6 +177,8 @@ header {
   list-style: none;
   width: 20em;
   height: 15em; }
+  .reminder a {
+    color: #000; }
   .reminder:hover {
     opacity: 1;
     transform: scale(1.02); }

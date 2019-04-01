@@ -9,6 +9,9 @@
   width: 20em;
   height: 15em;
 
+  a {
+    color: $link-hover-color;   
+  }
 
   &:hover {
     opacity: 1;
