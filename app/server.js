@@ -10,8 +10,10 @@ const express = require("express"),
     components = require("./components")(config, debug),
     arangoHelper = new components.ArangoHelper(),
     db = arangoHelper.authenticate(),
+    auth = new components.Authentication(db),
     reminderDAO = new components.ReminderDAO(db),
-    discord = new components.DiscordHelper(reminderDAO);
+    discord = new components.DiscordHelper(reminderDAO),
+    NodeSession = require('node-session');
 
 const handlebars = exphbs.create({
     helpers: {
@@ -41,17 +43,43 @@ app.io = io;
 discord.login();
 
 app.get("/", function(req, res) {
-    res.render("login", {
-        
-    });
-    // reminderDAO.getAll().then(
-    //     docs => {
-    //         res.render("home", {
-    //             reminders: docs
-    //         });
-    //     },
-    //     err => debug(err)
-    // ); 
+    debug(req.query.code);
+    debug(req.query.state);
+
+    const session_id = decodeURIComponent(req.query.state);
+
+    if(req.query.code) {
+        auth.verify_session_id(req.connection.remoteAddress, session_id).then(
+            () => {
+                reminderDAO.getAll().then(
+                    docs => {
+                        res.render("home", {
+                            reminders: docs
+                        });
+                    },
+                    err => debug(err)
+                ); 
+            },
+            err => {
+                res.render("login", {
+                    error: err
+                });
+            }
+        );
+    } else {
+        auth.generate_session_id(req.connection.remoteAddress).then(
+            meta => {
+                debug("Document saved:", meta._rev);
+                debug("Session stored:", meta.new.session_id);
+                res.render("login", {
+                    session_id: meta.new.session_id
+                });
+            },
+            err => {
+                debug("Failed to save document:", err);
+            }
+          );
+    }
 });
 
 io.on("connection", function(socket) {
