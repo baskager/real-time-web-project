@@ -16,6 +16,16 @@
   padding-left: 0;
   width: 100%;
   transform: scale(1);
+  outline: 0;
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: inline-block;
+
+  .maininfo {
+    background: #fff;
+    height: 100%;
+    overflow: auto;
+  }
   
   &.faded {
     opacity: 0.25;
@@ -35,13 +45,6 @@
   }
   a {
     color: $link-hover-color;   
-  }
-  &:hover {
-    opacity: 1;
-    transform: scale(1.02);
-    a {
-      color: $link-color;
-    }
   }
   a.clickable-wrap {
     flex-direction: column;

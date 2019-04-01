@@ -1,0 +1,28 @@
+.btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  &.discord {
+    max-height: 4em;
+    .logo {
+      flex-basis: auto;
+      flex-grow: 1;
+      flex-basis: 1;
+      max-width: 2.5em;
+    }
+    .value {
+      align-self: center;
+      text-align: center;
+      width: 100%;
+      position: absolute;
+      left: 0;
+    }
+    padding: 0.4em;
+    background: $discord-blurple;
+    border-radius: 0.2em;
+    color: $discord-fullwhite;
+    font-weight: 700;
+    text-align: center;
+  }
+}

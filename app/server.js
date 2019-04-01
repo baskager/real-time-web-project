@@ -41,14 +41,17 @@ app.io = io;
 discord.login();
 
 app.get("/", function(req, res) {
-    reminderDAO.getAll().then(
-        docs => {
-            res.render("home", {
-                reminders: docs
-            });
-        },
-        err => debug(err)
-    ); 
+    res.render("login", {
+        
+    });
+    // reminderDAO.getAll().then(
+    //     docs => {
+    //         res.render("home", {
+    //             reminders: docs
+    //         });
+    //     },
+    //     err => debug(err)
+    // ); 
 });
 
 io.on("connection", function(socket) {
