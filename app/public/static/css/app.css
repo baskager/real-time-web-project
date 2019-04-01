@@ -221,6 +221,8 @@ header {
       text-align: center;
       margin-top: 0;
       font-weight: 400; }
+  .card.login .error {
+    text-align: center; }
   .card.login .oauth-buttons {
     padding: 0 4em 0 4em; }
 

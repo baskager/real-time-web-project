@@ -10,11 +10,17 @@ const express = require("express"),
     components = require("./components")(config, debug),
     arangoHelper = new components.ArangoHelper(),
     db = arangoHelper.authenticate(),
-    auth = new components.Authentication(db),
     reminderDAO = new components.ReminderDAO(db),
     discord = new components.DiscordHelper(reminderDAO),
-    NodeSession = require('node-session');
+    authclients = {
+        discord: discord
+    },
+    auth = new components.Authentication(db, authclients),
+    NodeSession = require("node-session");
 
+    const Discord = require("discord.js"),
+    discordclient = new Discord.Client();
+    
 const handlebars = exphbs.create({
     helpers: {
         // Allows comparing two values, like if(a===b)
@@ -40,45 +46,51 @@ app.use(express.json());
 app.io = io;
 
 // Enable discord bot functinality
-discord.login();
+discord.loginBot();
 
 app.get("/", function(req, res) {
-    debug(req.query.code);
-    debug(req.query.state);
+    res.writeHead(302, {"Location": "/login"});
+    res.end();
+});
 
-    const session_id = decodeURIComponent(req.query.state);
+app.get("/login", function(req, res) {
+    auth.generate_session_id(req.connection.remoteAddress).then(
+        result => res.render("login", {session_id: result.new.session_id, redirectUri: config.discord.redirectUri}),
+        err => res.render("login", {error: err, session_generate_error: true})
+    );
+});
 
-    if(req.query.code) {
+app.get("/verify", function(req, res) {
+    const session_id = encodeURIComponent(req.query.state);
+
+    if(req.query.code && session_id) {
+        // Verify the session ID that was passed along by the Discord authorization prompt, this prevents CSFR attacks.
         auth.verify_session_id(req.connection.remoteAddress, session_id).then(
             () => {
-                reminderDAO.getAll().then(
-                    docs => {
-                        res.render("home", {
-                            reminders: docs
-                        });
-                    },
-                    err => debug(err)
-                ); 
+                // Echange the (one-time) code received by the Discord authorization prompt for an Access Token.
+                return discord.exchangeAccessToken(req.query.code);
             },
-            err => {
-                res.render("login", {
-                    error: err
-                });
-            }
+            // If the session ID could not be verified, send the client back to the login page along with the error
+            err => res.render("login", {error: err, session_invalid_error: true})
+        ).then(
+            // Received a response upon exchanging the one-time code for an access token
+            tokenExchangeResult => {
+                const tokens = JSON.parse(tokenExchangeResult);
+                if(tokenExchangeResult) {
+                    auth.createOauth2User("discord", session_id,tokens.access_token, tokens.refresh_token, 
+                        tokens.token_type, tokens.expires_in);
+
+                    reminderDAO.getAll().then(
+                        docs => res.render("home", {reminders: docs}),
+                        err => debug(err)
+                    ); 
+                }
+            },
+            err => res.render("login", {error: err, oauth_invalid_error: true})
         );
     } else {
-        auth.generate_session_id(req.connection.remoteAddress).then(
-            meta => {
-                debug("Document saved:", meta._rev);
-                debug("Session stored:", meta.new.session_id);
-                res.render("login", {
-                    session_id: meta.new.session_id
-                });
-            },
-            err => {
-                debug("Failed to save document:", err);
-            }
-          );
+        res.writeHead(302, {"Location": "/login"});
+        res.end();
     }
 });
 
@@ -131,3 +143,12 @@ io.on("connection", function(socket) {
 http.listen(port, function(){
     console.log("Server listening on port " + port);
 });
+
+// reminderDAO.getAll().then(
+//     docs => {
+//         res.render("home", {
+//             reminders: docs
+//         });
+//     },
+//     err => debug(err)
+// ); 
