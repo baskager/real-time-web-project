@@ -4,16 +4,27 @@
       {{#if session_id}}
         <h3 id="title">Please login with your discord account</h3>
         <div class="oauth-buttons">
-          <a href="https://discordapp.com/api/oauth2/authorize?client_id=557180806179848195&redirect_uri=http%3A%2F%2Flocalhost%3A1511&response_type=code&scope=identify%20email%20guilds&state={{session_id}}" class="btn discord">
+          <a href="https://discordapp.com/api/oauth2/authorize?client_id=557180806179848195&redirect_uri={{redirectUri}}&response_type=code&scope=identify%20email%20guilds&state={{session_id}}" class="btn discord">
             <img class="logo" src="./static/img/icons/discord-logo-white.svg">
             <div class="value">Login with discord</div>
           </a>
         </div>
       {{/if}}
-      {{#if error}}
-        <h3 id="title">Something went wrong</h3>
-        Token does not exist or is expired. <a href="./">Click here to sign in again</a>
-      {{/if}}
+        {{#if error}}
+        <div class="error">
+          <h3 id="title">Oof, big oops</h3>
+            {{#if oauth_invalid_error}}
+              Discord could not verify the authorization request.
+            {{/if}}
+            {{#if session_invalid_error}}
+              We could not verify if it was really you logging in.
+            {{/if}}
+            {{#if session_generate_error}}
+              We could not store your session.
+            {{/if}}
+            <br/><a href="./">Click here to try again</a>
+          {{/if}}
+        </div>
     </div>
   </li>
 </ul>

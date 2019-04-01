@@ -36,11 +36,12 @@ module.exports = function(config, cache, environment, debug) {
      *
      * @returns {void}
      **/
-    create(title, avatar, postedBy, client, due) {
+    create(title, author, postedBy, client, due) {
       debug("Creating new reminder: " + title);
       let doc = {
           title: title,
-          avatar: avatar,
+          avatar: author.avatar,
+          authorId: author.id,
           postedBy: postedBy,
           timestamp: moment(),
           client,
