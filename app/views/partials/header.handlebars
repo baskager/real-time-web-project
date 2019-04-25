@@ -1,3 +1,6 @@
 <header>
     <h1>{{title}}</h1>
+    {{#if user}}
+        <p>Welcome back <b>{{user.username}}</b>, <a href="/logout">logout</a></p>
+    {{/if}}
 </header>

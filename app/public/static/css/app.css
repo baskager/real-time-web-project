@@ -109,15 +109,21 @@ input:focus, textarea:focus, select:focus {
       left: 0; }
 
 header {
+  text-align: center;
   margin-bottom: 1em; }
   header h1 {
-    text-align: center;
     font-size: 3.75em;
     color: rgba(255, 255, 255, 0.5);
     font-weight: medium;
     margin-bottom: 0;
-    padding: 0;
     text-transform: uppercase; }
+  header p {
+    color: white;
+    margin: 0; }
+  header a {
+    color: #000; }
+    header a:hover {
+      color: #0085B6; }
 
 /* .thumbnail-row:first-child {
     margin-top: 8em; 

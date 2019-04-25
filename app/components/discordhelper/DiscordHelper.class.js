@@ -25,6 +25,7 @@ module.exports = function(config, cache, environment, debug) {
     constructor(reminderDAO) {
       debug = debug.extend(this.constructor.name);
       this.reminderDAO = reminderDAO;
+      this.name = "discord";
     }
     /**
      * Loads the triggers that define the interaction between discord and this application
@@ -83,6 +84,10 @@ module.exports = function(config, cache, environment, debug) {
       console.dir(options);
 
       return request.get(options);
+    }
+
+    getName() {
+      return this.name;
     }
     /**
      * Logs in to a discord bot with a token

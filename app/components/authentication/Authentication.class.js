@@ -37,11 +37,11 @@ module.exports = function(config, cache, environment, debug) {
      *
      * @returns {string} session id
      **/
-    generate_session_id(remoteAddress) {
+    generateSessionId(remoteAddress) {
       const session_base = moment().toString() + Math.random().toString();
       const session_id = encodeURIComponent(crypto.createHash("sha256").update(session_base).digest("base64"));
 
-      return this.store_session_id(remoteAddress, session_id);
+      return this.storeSessionid(remoteAddress, session_id);
     }
     /**
      * Verifies a session id by checking it against the database along with the users IP address
@@ -54,7 +54,7 @@ module.exports = function(config, cache, environment, debug) {
      *
      * @returns {string} session id
      **/
-    verify_session_id(remoteAddress, sessionId) {
+    verifySessionId(remoteAddress, sessionId) {
       const doc = {
         remoteAddress: remoteAddress,
         session_id: sessionId
@@ -87,13 +87,20 @@ module.exports = function(config, cache, environment, debug) {
      *
      * @returns {string} session id
      **/
-    store_session_id(remoteAddress, session_id) {
+    storeSessionid(remoteAddress, session_id) {
       let doc = {
         remoteAddress: remoteAddress,
         session_id: session_id
       };
 
       return this.sessionCollection.save(doc, { returnNew: true });
+    }
+
+    getUserById(client, id) {
+      debug("Getting user with ID:", id);
+      return this.db.query(`FOR p IN person FILTER p.remoteId == '${id}' && p.client == '${client}' RETURN p`).then(
+        cursor => cursor.map(doc => doc)
+      );
     }
 
     /**
@@ -119,14 +126,13 @@ module.exports = function(config, cache, environment, debug) {
         oauth2Client.getCurrentUser(tokenType, accessToken).then(
           result => {
             const user = JSON.parse(result);
-            debug(`Current ${client} user: ${user}`);
 
             const doc = {
               username: user.username,
               email: user.email,
               client: client,
               avatar: user.avatar,
-              remote_id: user.id,
+              remoteId: user.id,
               discriminator: user.discriminator,
               locale: user.locale,
               flags: user.flags,
@@ -137,10 +143,20 @@ module.exports = function(config, cache, environment, debug) {
               tokenType: tokenType
             };
 
-            debug(doc);
-
-            resolve(self.personCollection.save(doc, { returnNew: true }));
+            return doc;
   
+          },
+          error => reject(error)
+        ).then(
+          remoteUser => {
+            // Check if the user already has an account with us
+            self.getUserById(client, remoteUser.remoteId).then(
+              result => {
+                if(result[0]) resolve(result[0]);
+                else resolve(self.personCollection.save(remoteUser, { returnNew: true }));
+              },
+              error => reject(error)
+            );
           },
           error => reject(error)
         );

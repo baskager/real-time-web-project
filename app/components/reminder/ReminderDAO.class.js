@@ -36,13 +36,13 @@ module.exports = function(config, cache, environment, debug) {
      *
      * @returns {void}
      **/
-    create(title, author, postedBy, client, due) {
+    create(title, author, mentionedUserId, client, due) {
       debug("Creating new reminder: " + title);
       let doc = {
           title: title,
           avatar: author.avatar,
           authorId: author.id,
-          postedBy: postedBy,
+          mentionedUserId: mentionedUserId,
           timestamp: moment(),
           client,
           due
@@ -51,8 +51,11 @@ module.exports = function(config, cache, environment, debug) {
       return this.collection.save(doc);
   }
 
-    get(id) {
-      debug("Not implemented yet");
+    getByUserId(id) {
+      debug("Getting reminder for user ID:", id);
+      return this.db.query("FOR r IN reminder FILTER r.mentionedUserId == '"+ id +"' SORT r.due DESC RETURN r").then(
+        cursor => cursor.map(doc => doc)
+      );
     }
     /**
      * Returns all reminders from the database

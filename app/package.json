@@ -29,13 +29,16 @@
   "homepage": "https://github.com/baskager/real-time-web-project#readme",
   "dependencies": {
     "arangojs": "^6.9.0",
+    "connect-redis": "^3.4.1",
     "debug": "^3.2.6",
     "discord.js": "^11.4.2",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
+    "express-session": "^1.16.1",
     "form-data": "^2.3.3",
     "moment": "^2.23.0",
     "node-session": "^1.2.1",
+    "redis": "^2.8.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "socket.io": "^2.1.1"
