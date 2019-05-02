@@ -13,7 +13,7 @@
     color: $link-hover-color;   
   }
 
-  &:hover {
+  &:hover, &:focus-within {
     opacity: 1;
     transform: scale(1.02);
     a {

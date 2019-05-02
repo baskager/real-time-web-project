@@ -152,7 +152,7 @@ header {
     overflow: auto; }
   .card.faded {
     opacity: 0.25; }
-    .card.faded:hover {
+    .card.faded:hover, .card.faded:focus {
       opacity: 1; }
   .card.show {
     animation: 0.4s ease-out 0s 1 fadeInHalf; }
@@ -185,10 +185,10 @@ header {
   height: 15em; }
   .reminder a {
     color: #000; }
-  .reminder:hover {
+  .reminder:hover, .reminder:focus-within {
     opacity: 1;
     transform: scale(1.02); }
-    .reminder:hover a {
+    .reminder:hover a, .reminder:focus-within a {
       color: #FF4D61; }
   .reminder.hide {
     margin-right: 0; }
