@@ -1,0 +1,25 @@
+<ul class="center flex card-caroussel">
+  <li class="card login">
+    <div class="maininfo">
+      {{#if session_id}}
+        <h3 id="title">Verifying your information</h3>
+        <div id="messages"></div>
+      {{/if}}
+        {{#if error}}
+        <div class="error">
+          <h3 id="title">Oof, big oops</h3>
+            {{#if oauth_invalid_error}}
+              Discord could not verify the authorization request.
+            {{/if}}
+            {{#if session_invalid_error}}
+              We could not verify if it was really you logging in.
+            {{/if}}
+            {{#if session_generate_error}}
+              We could not store your session.
+            {{/if}}
+            <br/><a href="./">Click here to try again</a>
+          {{/if}}
+        </div>
+    </div>
+  </li>
+</ul>

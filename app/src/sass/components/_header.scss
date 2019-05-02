@@ -1,12 +1,22 @@
 header {
+  text-align: center;
   h1 {
-    text-align: center;
     font-size: 3.75em;
-    color: rgba(255,255,255, 0.5);
+    color: $header-title-color;
     font-weight: medium;
     margin-bottom: 0;
-    padding: 0;
     text-transform: uppercase;
   }
+  p {
+    color: $header-subtitle-color;
+    margin: 0;
+  }
+  a {
+    color: $link-hover-color;
+    &:hover {
+      color: $secondary-color;
+    }
+  }
+
   margin-bottom: 1em; 
 }

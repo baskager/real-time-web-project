@@ -1,6 +1,12 @@
 $dark-overlay-color: background(0, 0, 0, 0.8);
 $primary-color: #ff4d61;
+$secondary-color: #0085B6;
 $background-color: $primary-color;
+
+$header-title-color: rgba(255,255,255, 0.5);
+$header-subtitle-color: rgba(255,255,255, 1);
+
+$h3-lighter-color: #777;
 
 $breakpoint-small: 50em;
 $breakpoint-medium: 70em;
@@ -8,3 +14,9 @@ $breakpoint-medium: 70em;
 $link-color: #FF4D61;
 $link-hover-color: #000;
 $link-focus-background: #00000011;
+
+$discord-blurple: #7289DA;
+$discord-fullwhite: #FFFFFF;
+$discord-greple: #99AAB5;
+$discord-dark-but-not-black: #2C2F33;
+$discord-not-quite-black: #23272A;

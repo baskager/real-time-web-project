@@ -36,22 +36,36 @@ module.exports = function(config, cache, environment, debug) {
      *
      * @returns {void}
      **/
-    create(title, avatar, postedBy, client, due) {
+    create(title, author, mentionedUserId, client, due) {
       debug("Creating new reminder: " + title);
       let doc = {
           title: title,
-          avatar: avatar,
-          postedBy: postedBy,
+          avatar: author.avatar,
+          authorId: author.id,
+          mentionedUserId: mentionedUserId,
           timestamp: moment(),
           client,
           due
       };
   
       return this.collection.save(doc);
-  }
-
-    get(id) {
-      debug("Not implemented yet");
+    }
+    /**
+     * Returns all reminders from the database
+     *
+     * @since: 02-05-2019
+     * @author: Bas Kager
+     * 
+     * @param {string} client The oauth2 client
+     * @param {string} id The remote user ID
+     *
+     * @returns {Promise} Promise containing the query results
+     **/
+    getByUserId(client, id) {
+      debug("Getting reminder for user ID:", id);
+      return this.db.query(`FOR r IN reminder FILTER r.mentionedUserId == '${id}' && r.client == '${client}' SORT r.due DESC RETURN r`).then(
+        cursor => cursor.map(doc => doc)
+      );
     }
     /**
      * Returns all reminders from the database

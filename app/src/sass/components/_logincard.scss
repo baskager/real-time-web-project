@@ -1,0 +1,24 @@
+.card.login {
+  list-style: none;
+  width: 100%;
+  
+  .maininfo {
+    background: #fff;
+    height: 100%;
+    // overflow: auto;
+    padding: 2em;
+    h3 {
+      text-align: center;
+      margin-top: 0;
+      // color: $h3-lighter-color;
+      font-weight: 400; 
+    }
+  }
+  .error {
+    text-align: center;
+  }
+
+  .oauth-buttons {
+    padding: 0 4em 0 4em;
+  }
+}

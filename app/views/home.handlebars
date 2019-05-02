@@ -1,9 +1,9 @@
 {{> header title="reminders"}}
-
 <main class="center container" id="main">  
     <section class="filters center flex">
         <form class="row center" action="">
-            <input id="search" type="search" placeholder="Search in your reminders.">
+            <input type="hidden" autofocus="true" />
+            <input id="search" type="search" autofocus="false" placeholder="Search in your reminders.">
         </form>
     </section>
     <ul class="center flex card-caroussel search-items-row">
@@ -23,8 +23,12 @@
 <script>
 $(function () {
     var socket = io('127.0.0.1:1511');
-    socket.on('reminder', function(reminder){
-        $('#messages').append($('<li>').text(reminder.title));
+    socket.emit("test", "Ghello");
+
+    socket.on('test', function(reminder){
+    //    $('#messages').append($('<li>').text(reminder.title));
+        alert("Reminder");
+        console.dir(reminder);
     });
 });
 </script>

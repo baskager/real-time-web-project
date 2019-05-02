@@ -48,7 +48,8 @@ module.exports = function createReminder(msg, debug, reminderDAO) {
     }
     
     function createReminder(title, msg, mentionedUser, duedate) {
-      reminderDAO.create(title, msg.author.avatarURL, mentionedUser.username, "DISCORDBOT", duedate).then(
+      // debug(mentionedUser.id);
+      reminderDAO.create(title, msg.author, mentionedUser.id, "discord", duedate).then(
         meta => {
           debug("Document saved:", meta._rev);
 

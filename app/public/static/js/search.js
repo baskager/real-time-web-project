@@ -88,6 +88,11 @@
         fadeAllThumbnails();
     });
 
+    // Reset appliocation state when input is exited without values
+    input.addEventListener("blur", event => {
+        if(input.value === "") resetApplicationState();
+    });
+
     // Perform a search action on each input
     input.addEventListener("input", event => {
         var query = input.value.toUpperCase();
@@ -97,12 +102,15 @@
     // General keypress actions
     document.addEventListener("keydown", function (event) {
         var key = getKeyFromEvent(event);
-        
-        // When a user starts typing, automatically focus on the search input box
-        if (key > 63 && key < 123 ||
-            key === 8 && input.value != "" ||
-            key > 47 && key < 58) {
-            input.focus();
+
+        // Ignore ctrl+key combination
+        if (!event.ctrlKey) {
+            // When a user starts typing, automatically focus on the search input box
+            if (key > 63 && key < 123 ||
+                key === 8 && input.value != "" ||
+                key > 47 && key < 58) {
+                input.focus();
+            }
         }
     });
 
@@ -110,7 +118,7 @@
     input.addEventListener("keydown", function (event) {
         var key = getKeyFromEvent(event);
         // Remove focus from input element when "enter" or "escape" is pressed
-        if (key === 27 || key === "Escape" || key === 13) {
+        if (key === 27 || key === "Escape" || key === 13 || key === 17) {
             event.preventDefault();
             input.blur();
         }

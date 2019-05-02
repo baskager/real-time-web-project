@@ -9,14 +9,19 @@
   width: 20em;
   height: 15em;
 
+  a {
+    color: $link-hover-color;   
+  }
+
+  &:hover, &:focus-within {
+    opacity: 1;
+    transform: scale(1.02);
+    a {
+      color: $link-color;
+    }
+  }
   &.hide {
     margin-right: 0;
-  }
-  
-  .maininfo {
-    background: #fff;
-    height: 100%;
-    overflow: auto;
   }
   .metainfo {
     display: flex;  
