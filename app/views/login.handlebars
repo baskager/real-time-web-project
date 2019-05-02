@@ -11,8 +11,6 @@
 <script>
 $(function () {
     var socket = io('127.0.0.1:1511');
-
-    socket.emit('verify', "test");
     
     socket.on('reminder', function(reminder){
         $('#messages').append($('<li>').text(reminder));

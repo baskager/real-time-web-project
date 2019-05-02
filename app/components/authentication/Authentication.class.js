@@ -63,7 +63,6 @@ module.exports = function(config, cache, environment, debug) {
       return new Promise(function(resolve, reject) {
         self.sessionCollection.byExample(doc).then(
           docs => {
-            debug(`Verifying session ID: ${sessionId}`);
 
             if( docs.count === 1) {
               debug(`VALID SESSION: ${sessionId}`);
@@ -96,6 +95,17 @@ module.exports = function(config, cache, environment, debug) {
       return this.sessionCollection.save(doc, { returnNew: true });
     }
 
+    /**
+     * Fetches a user object using a remote ID
+     *
+     * @since: 02-05-2019
+     * @author: Bas Kager
+     * 
+     * @param {string} client The oauth2 client
+     * @param {string} id The remote user ID
+     *
+     * @returns {Promise} ArangoDB query result
+     **/
     getUserById(client, id) {
       debug("Getting user with ID:", id);
       return this.db.query(`FOR p IN person FILTER p.remoteId == '${id}' && p.client == '${client}' RETURN p`).then(
@@ -162,14 +172,6 @@ module.exports = function(config, cache, environment, debug) {
         );
 
       });
-
-
-      // let doc = {
-      //   remoteAddress: remoteAddress,
-      //   session_id: session_id
-      // };
-
-      // return this.sessionCollection.save(doc, { returnNew: true });
     }
 
     

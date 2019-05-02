@@ -49,11 +49,21 @@ module.exports = function(config, cache, environment, debug) {
       };
   
       return this.collection.save(doc);
-  }
-
-    getByUserId(id) {
+    }
+    /**
+     * Returns all reminders from the database
+     *
+     * @since: 02-05-2019
+     * @author: Bas Kager
+     * 
+     * @param {string} client The oauth2 client
+     * @param {string} id The remote user ID
+     *
+     * @returns {Promise} Promise containing the query results
+     **/
+    getByUserId(client, id) {
       debug("Getting reminder for user ID:", id);
-      return this.db.query("FOR r IN reminder FILTER r.mentionedUserId == '"+ id +"' SORT r.due DESC RETURN r").then(
+      return this.db.query(`FOR r IN reminder FILTER r.mentionedUserId == '${id}' && r.client == '${client}' SORT r.due DESC RETURN r`).then(
         cursor => cursor.map(doc => doc)
       );
     }

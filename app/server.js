@@ -9,7 +9,6 @@ const config = require("./config");
 const redis = require("redis");
 const redisClient = redis.createClient();
 const redisStore = require("connect-redis")(session);
-
 let debug = require("debug")(config.debug.id);
 const port = config.port || 3000;
 const moment = require("moment");
@@ -83,7 +82,7 @@ app.get("/", function(req, res) {
         //     err => debug(err)
         // ); 
 
-        reminderDAO.getByUserId(req.session.user.remoteId).then(
+        reminderDAO.getByUserId(req.session.user.client, req.session.user.remoteId).then(
             docs => {
                 res.render("home", {
                     user: user,
@@ -158,24 +157,24 @@ app.get("/verify", function(req, res) {
 io.on("connection", function(socket) {
     debug("A client connected through socket: " + socket.id);
 
-    socket.on("verify", function(sessionId){
-        debug("Verifying session id: ", sessionId);
+    socket.on("test", function(sessionId){
+        debug("test: ", sessionId);
     });
 
-    app.post("/webhook/create", function(req, res) {
-        reminderDAO.create(req.body.title, req.body.avatar, req.body.postedBy, "webhook", req.body.due).then(
-            meta => {
-                debug("Document saved:", meta._rev);
-                req.app.io.emit("reminder", meta);
-                res.status(200).send();
-            },
-            err => {
-                debug("Failed to save document:", err);
-                res.status(500).send();
-            }
-        );
+    // app.post("/webhook/create", function(req, res) {
+    //     reminderDAO.create(req.body.title, req.body.avatar, req.body.postedBy, "webhook", req.body.due).then(
+    //         meta => {
+    //             socket.emit("reminder", meta);
+    //             debug("Document saved:", meta._rev);
+    //             res.status(200).send();
+    //         },
+    //         err => {
+    //             debug("Failed to save document:", err);
+    //             res.status(500).send();
+    //         }
+    //     );
 
-    });
+    // });
 
     socket.on("disconnect", function(){
         debug("A user disconnected");
