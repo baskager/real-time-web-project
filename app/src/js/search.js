@@ -104,14 +104,15 @@
         var key = getKeyFromEvent(event);
 
         // Ignore ctrl+key combination
-        if (!event.ctrlKey) {
+        // if (!event.ctrlKey) {
             // When a user starts typing, automatically focus on the search input box
-            if (key > 63 && key < 123 ||
+            if ((key > 63 && key < 90 ||
                 key === 8 && input.value != "" ||
-                key > 47 && key < 58) {
+                key > 47 && key < 58) &&
+                !event.ctrlKey) {
                 input.focus();
             }
-        }
+        // }
     });
 
     // Actions for keypresses when focused in the searchbox
