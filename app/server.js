@@ -16,7 +16,8 @@ const components = require("./components")(config, debug);
 const arangoHelper = new components.ArangoHelper();
 const db = arangoHelper.authenticate();
 const reminderDAO = new components.ReminderDAO(db);
-const discord = new components.DiscordHelper(reminderDAO);
+// DiscordHelper needs the Reminder Data Access Object and the Socket.io object to push reminders to the db and GUI
+const discord = new components.DiscordHelper(reminderDAO, io);
 const authclients = {
     discord: discord
 };
@@ -157,8 +158,10 @@ app.get("/verify", function(req, res) {
 io.on("connection", function(socket) {
     debug("A client connected through socket: " + socket.id);
 
+    discord.setSocket(socket);
+
     socket.on("test", function(sessionId){
-        debug("test: ", sessionId);
+        debug("test: ", sessionId, socket.id);
     });
 
     // app.post("/webhook/create", function(req, res) {

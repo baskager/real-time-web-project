@@ -26,7 +26,9 @@
     height: 100%;
     overflow: auto;
   }
-  
+  &.hidden {
+    display: none;
+  }
   &.faded {
     opacity: 0.25;
     &:hover, &:focus {

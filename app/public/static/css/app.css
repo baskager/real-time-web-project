@@ -150,6 +150,8 @@ header {
     background: #fff;
     height: 100%;
     overflow: auto; }
+  .card.hidden {
+    display: none; }
   .card.faded {
     opacity: 0.25; }
     .card.faded:hover, .card.faded:focus {

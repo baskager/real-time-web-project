@@ -6,7 +6,24 @@
             <input id="search" type="search" autofocus="false" placeholder="Search in your reminders.">
         </form>
     </section>
-    <ul class="center flex card-caroussel search-items-row">
+    <ul class="center flex card-caroussel search-items-row" id="cardCarousel">
+        <li class="card reminder hide faded" id="reminderCardCopy">
+            <a href="" class="clickable-wrap flex">
+                <div class="maininfo">
+                    <h3 id="title"></h3>
+                </div>
+                <div class="metainfo">
+                    <div class="avatar">
+                        <img id="avatar" src="" class="avatar">
+                    </div>
+                    <div class="metatext">
+                        <span class="name" id="name"></span>
+                        <span class="date"><b>posted on:</b> <span id="datePosted"></span></span>
+                        <span class="date"><b>due date:</b> <span id="dateDue">none</span></span>
+                    </div>
+                </div>
+            </a>
+        </li>  
         {{#each reminders}}
             {{> reminder 
             avatar=avatar
@@ -18,18 +35,34 @@
     </ul>
     <ul id="messages"></ul>
 </main>
-<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
 <script>
-$(function () {
     var socket = io('127.0.0.1:1511');
-    socket.emit("test", "Ghello");
+    var card = document.getElementById("reminderCardCopy");
+    var cardCarousel = document.getElementById("cardCarousel");
 
-    socket.on('test', function(reminder){
-    //    $('#messages').append($('<li>').text(reminder.title));
-        alert("Reminder");
-        console.dir(reminder);
+    socket.on('reminder', function(reminder){
+        var cardClone = card.cloneNode(true);
+        // Define which entries of the thumbnail should be searched
+        var titleField = cardClone.querySelector("#title");
+        var postedByField = cardClone.querySelector("#name");
+        var datePostedField = cardClone.querySelector("#datePosted");
+        var dateDueField = cardClone.querySelector("#dateDue");
+        var avatarField = cardClone.querySelector("#avatar");
+
+        titleField.innerHTML = reminder.title;
+        postedByField.innerHTML = reminder.authorName;
+        datePostedField.innerHTML = moment(reminder.timestamp).format("DD-MM-YYYY");
+        if(reminder.due) dateDueField.innerHTML = moment(reminder.due).format("DD-MM-YYYY");
+        avatarField.src = "https://cdn.discordapp.com/avatars/"+reminder.authorId+"/"+reminder.avatar+".png?size=256"
+
+        cardCarousel.appendChild(cardClone);
+        setTimeout(function () {
+            cardClone.classList.remove("hide")
+            cardClone.classList.remove("faded")
+        },50);
+    
     });
-});
 </script>
 <script type="text/javascript" src="static/js/search.js"></script>

@@ -26,6 +26,12 @@ module.exports = function(config, cache, environment, debug) {
       debug = debug.extend(this.constructor.name);
       this.reminderDAO = reminderDAO;
       this.name = "discord";
+      this.socket = null;
+    }
+
+    setSocket(socket) {
+      this.socket = socket;
+      this.loadTriggers();
     }
     /**
      * Loads the triggers that define the interaction between discord and this application
@@ -37,7 +43,7 @@ module.exports = function(config, cache, environment, debug) {
      **/
     loadTriggers() {
       triggers.onReady(discordclient, debug);
-      triggers.onMessage(discordclient, debug, this.reminderDAO);
+      triggers.onMessage(discordclient, debug, this.reminderDAO, this.socket);
     } 
 
     /**

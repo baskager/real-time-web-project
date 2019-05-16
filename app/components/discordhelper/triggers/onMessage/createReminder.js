@@ -1,7 +1,7 @@
 const { createErrorEmbed, createSuccessEmbed } = require("../helperFunctions"),
 moment = require("moment");
 
-module.exports = function createReminder(msg, debug, reminderDAO) {
+module.exports = function createReminder(msg, debug, reminderDAO, socket) {
   let error = false;
 
   // Check if 'to' is mentioned in the command
@@ -12,14 +12,14 @@ module.exports = function createReminder(msg, debug, reminderDAO) {
         let mentionedUser = msg.mentions.users.values().next().value;
 
         // Slice the title out of the command message
-        let title = msg.content.slice(msg.content.lastIndexOf(" to ") + " to ".length);
+        let title = msg.content.slice(msg.content.indexOf(" to ") + " to ".length);
         title = title.charAt(0).toUpperCase() + title.slice(1);
 
         let duedate = null;
         // Check if the author indicated a due date
         if(title.lastIndexOf(" on ") > -1) {
           // Slice the due date out of the command message
-          const dateInput = title.slice(title.lastIndexOf(" on ") + " on ".length);
+          const dateInput = title.slice(title.indexOf(" on ") + " on ".length);
           duedate = moment(dateInput, "DD-MM-YYYY");
 
           if(duedate.isValid()) {
@@ -48,7 +48,6 @@ module.exports = function createReminder(msg, debug, reminderDAO) {
     }
     
     function createReminder(title, msg, mentionedUser, duedate) {
-      // debug(mentionedUser.id);
       reminderDAO.create(title, msg.author, mentionedUser.id, "discord", duedate).then(
         meta => {
           debug("Document saved:", meta._rev);
@@ -60,6 +59,8 @@ module.exports = function createReminder(msg, debug, reminderDAO) {
           } else {
             msg.reply(createSuccessEmbed("reminding: " + mentionedUser.username + " to " + title));
           }
+          // Update the GUI trough a socket connection if an active GUI is running
+          if(socket) socket.emit("reminder", meta.new);
         },
         err => {
           debug("Failed to save document:", err);

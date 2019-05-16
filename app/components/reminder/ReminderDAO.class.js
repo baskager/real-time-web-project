@@ -42,13 +42,14 @@ module.exports = function(config, cache, environment, debug) {
           title: title,
           avatar: author.avatar,
           authorId: author.id,
+          authorName: author.username,
           mentionedUserId: mentionedUserId,
           timestamp: moment(),
           client,
           due
       };
   
-      return this.collection.save(doc);
+      return this.collection.save(doc, { returnNew: true });
     }
     /**
      * Returns all reminders from the database

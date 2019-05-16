@@ -39,7 +39,7 @@
                 // Define which entries of the thumbnail should be searched
                 var title = thumbnail.querySelector("#title").innerText.toUpperCase();
                 var postedBy = thumbnail.querySelector("#name").innerText.toUpperCase();
-                var date = thumbnail.querySelector("#date").innerText.toUpperCase();
+                var date = thumbnail.querySelector("#dateDue").innerText.toUpperCase();
 
                 var searchableRecords = [title, postedBy, date];
 

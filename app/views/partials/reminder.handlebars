@@ -5,15 +5,15 @@
         </div>
         <div class="metainfo">
             <div class="avatar">
-                <img src="https://cdn.discordapp.com/avatars/{{authorId}}/{{avatar}}.png?size=256" class="avatar"/>
+                <img id="avatar" src="https://cdn.discordapp.com/avatars/{{authorId}}/{{avatar}}.png?size=256" class="avatar"/>
             </div>
             <div class ="metatext">
-                <span class="name" id="name">{{postedBy}}</span>
-                <span class="date"><b>posted on:</b> <span id="date">{{formatDate postedOn}}</span></span>
+                <span class="name" id="name">{{authorName}}</span>
+                <span class="date"><b>posted on:</b> <span id="datePosted">{{formatDate postedOn}}</span></span>
                 {{#if due}}
-                <span class="date"><b>due date:</b> <span id="date">{{formatDate due}}</span></span>
+                <span class="date"><b>due date:</b> <span id="dateDue">{{formatDate due}}</span></span>
                 {{else}}
-                <span class="date"><b>due date:</b> <span id="date">none</span></span>
+                <span class="date"><b>due date:</b> <span id="dateDue">none</span></span>
                 {{/if}}
             </div>
         </div>
