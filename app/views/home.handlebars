@@ -37,32 +37,5 @@
 </main>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
-<script>
-    var socket = io('127.0.0.1:1511');
-    var card = document.getElementById("reminderCardCopy");
-    var cardCarousel = document.getElementById("cardCarousel");
-
-    socket.on('reminder', function(reminder){
-        var cardClone = card.cloneNode(true);
-        // Define which entries of the thumbnail should be searched
-        var titleField = cardClone.querySelector("#title");
-        var postedByField = cardClone.querySelector("#name");
-        var datePostedField = cardClone.querySelector("#datePosted");
-        var dateDueField = cardClone.querySelector("#dateDue");
-        var avatarField = cardClone.querySelector("#avatar");
-
-        titleField.innerHTML = reminder.title;
-        postedByField.innerHTML = reminder.authorName;
-        datePostedField.innerHTML = moment(reminder.timestamp).format("DD-MM-YYYY");
-        if(reminder.due) dateDueField.innerHTML = moment(reminder.due).format("DD-MM-YYYY");
-        avatarField.src = "https://cdn.discordapp.com/avatars/"+reminder.authorId+"/"+reminder.avatar+".png?size=256"
-
-        cardCarousel.appendChild(cardClone);
-        setTimeout(function () {
-            cardClone.classList.remove("hide")
-            cardClone.classList.remove("faded")
-        },50);
-    
-    });
-</script>
+<script type="text/javascript" src="static/js/reminder-socket-ui.js"></script>
 <script type="text/javascript" src="static/js/search.js"></script>
