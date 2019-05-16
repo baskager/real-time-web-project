@@ -6,13 +6,3 @@
     <ul id="messages"></ul>
   </section>
 </main>
-<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script>
-$(function () {
-    var socket = io('127.0.0.1:1511');
-    socket.on('reminder', function(reminder){
-        $('#messages').append($('<li>').text(reminder.title));
-    });
-});
-</script>
