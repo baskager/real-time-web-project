@@ -8,6 +8,8 @@
 (function () {
     // The input element of the search box
     const input = document.querySelector("#search");
+    // empty input on page load
+    input.value = null;
 
     // All of the items to search against
     const search_items = document.querySelectorAll(".searchable");
@@ -69,6 +71,7 @@
     // Show a specific thumbnail
     function showThumbnail(thumbnail) {
         thumbnail.classList.remove("hide", "faded");
+        thumbnail.querySelector("#cardUrl").tabIndex = null;
     }
 
     // Fade the thubmnails
@@ -81,6 +84,7 @@
     // Hide a thumbnail
     function hideThumbnail(thumbnail) {
         thumbnail.classList.add("hide");
+        thumbnail.querySelector("#cardUrl").tabIndex = "-1";
     }
 
     // Fade search items when the input gets focus
@@ -109,7 +113,7 @@
             if ((key > 63 && key < 90 ||
                 key === 8 && input.value != "" ||
                 key > 47 && key < 58) &&
-                !event.ctrlKey) {
+                !(event.ctrlKey && key === 82) ) {
                 input.focus();
             }
         // }
@@ -119,7 +123,7 @@
     input.addEventListener("keydown", function (event) {
         var key = getKeyFromEvent(event);
         // Remove focus from input element when "enter" or "escape" is pressed
-        if (key === 27 || key === "Escape" || key === 13 || key === 17) {
+        if (key === 27 || key === "Escape" || key === 13) {
             event.preventDefault();
             input.blur();
         }
