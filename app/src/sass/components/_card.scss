@@ -1,18 +1,29 @@
 /* .thumbnail-row:first-child {
     margin-top: 8em; 
 } */
+.card-container {
+  // flex-direction: column;
+  > h3 {
+    color: $card-container-title-color;
+    margin-bottom: 0.4em;
+  }
+  padding: 0 2em;
+}
 .card-caroussel {
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   overflow-y: hidden;
-  padding: 2em;
-  // justify-content: space-around;
+  transition: .4s ease;
+  padding: 0;
+  margin-top: 0;
+  justify-content: left;
 }
 .card {
   overflow: none;
   position: relative;
   box-sizing: border-box;
-  overflow: auto;
-  transition: .25s ease;
+  overflow: none;
+  padding: 0.5em;
+  transition: .4s ease;
   padding-left: 0;
   width: 100%;
   transform: scale(1);
@@ -24,10 +35,7 @@
   .maininfo {
     background: #fff;
     height: 100%;
-    overflow: auto;
-  }
-  &.hidden {
-    display: none;
+    overflow: none;
   }
   &.faded {
     opacity: 0.25;
@@ -39,11 +47,19 @@
     animation: 0.4s ease-out 0s 1 fadeInHalf;
   }
   &.hide {
-    animation: 0.4s ease-out 0s 1 fadeOutHalf;
-    width: 0%;
-    transform: scale(0.75);
+    animation: 3s ease-out 0s 1 fadeOutHalf;
+    // transition: width 0.4s ease 0.4s;
+    // transition: opacity 0.4s ease 0;
+    width:0%;
+    min-width: 0%;
+    opacity: 0;
+    color: red;
     z-index: -99;
+    // transform: scale(0);
     transform-origin: center;
+  }
+  &.copy {
+    display: none;
   }
   a.clickable-wrap {
     flex-direction: column;

@@ -6,33 +6,66 @@
             <input id="search" type="search" autofocus="false" placeholder="Search in your reminders.">
         </form>
     </section>
-    <ul class="center flex card-caroussel search-items-row" id="cardCarousel">
-        <li class="card reminder hide faded" id="reminderCardCopy">
-            <a href="" class="clickable-wrap flex">
-                <div class="maininfo">
-                    <h3 id="title"></h3>
-                </div>
-                <div class="metainfo">
-                    <div class="avatar">
-                        <img id="avatar" src="" class="avatar">
+    <!--<section class="center card-container">
+        <h3>Due today</h3>
+        <ul class="center flex card-caroussel today search-items-row" id="cardCarouselToday">
+            <li class="card reminder hide faded" id="reminderCardCopy">
+                <a href="" class="clickable-wrap flex">
+                    <div class="maininfo">
+                        <h3 id="title"></h3>
                     </div>
-                    <div class="metatext">
-                        <span class="name" id="name"></span>
-                        <span class="date"><b>posted on:</b> <span id="datePosted"></span></span>
-                        <span class="date"><b>due date:</b> <span id="dateDue">none</span></span>
+                    <div class="metainfo">
+                        <div class="avatar">
+                            <img id="avatar" src="" class="avatar">
+                        </div>
+                        <div class="metatext">
+                            <span class="name" id="name"></span>
+                            <span class="date"><b>posted on:</b> <span id="datePosted"></span></span>
+                            <span class="date"><b>due date:</b> <span id="dateDue">none</span></span>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </li>  
-        {{#each reminders}}
-            {{> reminder 
-            avatar=avatar
-            title=title
-            postedBy=postedBy
-            postedOn=timestamp
-            }}
-        {{/each}}
-    </ul>
+                </a>
+            </li>  
+            {{#each reminders}}
+                {{> reminder 
+                avatar=avatar
+                title=title
+                postedBy=postedBy
+                postedOn=timestamp
+                }}
+            {{/each}}
+        </ul>
+    </section>-->
+    <section class="center card-container">
+        <h3>Your reminders</h3>
+        <ul class="center flex card-caroussel search-items-row scroll-horizontal" id="cardCarousel">
+            <li class="card reminder searchable hide faded copy" tabIndex="-1" id="reminderCardCopy">
+                <a id="cardUrl" href="" class="clickable-wrap flex">
+                    <div class="maininfo">
+                        <h3 id="title"></h3>
+                    </div>
+                    <div class="metainfo">
+                        <div class="avatar">
+                            <img id="avatar" src="" class="avatar">
+                        </div>
+                        <div class="metatext">
+                            <span class="name" id="name"></span>
+                            <span class="date"><b>posted on:</b> <span id="datePosted"></span></span>
+                            <span class="date"><b>due date:</b> <span id="dateDue">none</span></span>
+                        </div>
+                    </div>
+                </a>
+            </li>  
+            {{#each reminders}}
+                {{> reminder 
+                avatar=avatar
+                title=title
+                postedBy=postedBy
+                postedOn=timestamp
+                }}
+            {{/each}}
+        </ul>
+    </section>
 </main>
 <script type="text/javascript" src="static/js/socket.io.2.1.1.min.js"></script>
 <script type="text/javascript" src="static/js/moment-2.24.0.min.js"></script>
