@@ -12,6 +12,8 @@
   
   socket.on("reminder", function(reminder){
       var cardClone = card.cloneNode(true);
+      cardClone.classList.remove("copy");
+      
       // Define which entries of the thumbnail should be searched
       var titleField = cardClone.querySelector("#title");
       var postedByField = cardClone.querySelector("#name");
