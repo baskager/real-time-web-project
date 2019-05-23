@@ -128,17 +128,27 @@ header {
 /* .thumbnail-row:first-child {
     margin-top: 8em; 
 } */
+.card-container {
+  padding: 0 2em; }
+  .card-container > h3 {
+    color: #fff;
+    margin-bottom: 0.4em; }
+
 .card-caroussel {
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   overflow-y: hidden;
-  padding: 2em; }
+  transition: .4s ease;
+  padding: 0;
+  margin-top: 0;
+  justify-content: left; }
 
 .card {
   overflow: none;
   position: relative;
   box-sizing: border-box;
-  overflow: auto;
-  transition: .25s ease;
+  overflow: none;
+  padding: 0.5em;
+  transition: .4s ease;
   padding-left: 0;
   width: 100%;
   transform: scale(1);
@@ -149,9 +159,7 @@ header {
   .card .maininfo {
     background: #fff;
     height: 100%;
-    overflow: auto; }
-  .card.hidden {
-    display: none; }
+    overflow: none; }
   .card.faded {
     opacity: 0.25; }
     .card.faded:hover, .card.faded:focus {
@@ -159,11 +167,15 @@ header {
   .card.show {
     animation: 0.4s ease-out 0s 1 fadeInHalf; }
   .card.hide {
-    animation: 0.4s ease-out 0s 1 fadeOutHalf;
+    animation: 3s ease-out 0s 1 fadeOutHalf;
     width: 0%;
-    transform: scale(0.75);
+    min-width: 0%;
+    opacity: 0;
+    color: red;
     z-index: -99;
     transform-origin: center; }
+  .card.copy {
+    display: none; }
   .card a.clickable-wrap {
     flex-direction: column;
     box-sizing: border-box;
@@ -175,15 +187,19 @@ header {
       margin: 1em 1.5em 0 1em;
       width: 75%; }
 
+.card-caroussel.scroll-horizontal {
+  height: 29em;
+  overflow-y: scroll;
+  padding-bottom: 2em; }
+
 .reminder {
-  margin-right: 2em;
+  margin: 0 1em 1em;
   position: relative;
   outline: 0;
-  flex-grow: 0;
-  flex-shrink: 0;
   display: inline-block;
   list-style: none;
-  width: 20em;
+  width: calc(33.3% - 2em);
+  min-width: calc(33.3% - 2em);
   height: 15em; }
   .reminder a {
     color: #000; }
@@ -193,7 +209,8 @@ header {
     .reminder:hover a, .reminder:focus-within a {
       color: #FF4D61; }
   .reminder.hide {
-    margin-right: 0; }
+    margin: 0;
+    padding: 0; }
   .reminder .metainfo {
     display: flex;
     background: rgba(255, 255, 255, 0.75);
@@ -224,6 +241,8 @@ header {
   .card.login .maininfo {
     background: #fff;
     height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
     padding: 2em; }
     .card.login .maininfo h3 {
       text-align: center;
