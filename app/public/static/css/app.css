@@ -188,8 +188,8 @@ header {
       width: 75%; }
 
 .card-caroussel.scroll-horizontal {
-  height: 29em;
-  overflow-y: scroll;
+  height: 29.2em;
+  overflow-y: auto;
   padding-bottom: 2em; }
 
 .reminder {
@@ -203,11 +203,38 @@ header {
   height: 15em; }
   .reminder a {
     color: #000; }
+  .reminder .overlay {
+    position: absolute;
+    top: 0;
+    margin: 0.5em 0;
+    opacity: 0;
+    display: block;
+    width: calc(100% - 0.5em);
+    font-size: 2em;
+    line-height: 1em;
+    cursor: pointer;
+    text-align: center;
+    transition: .4s ease;
+    padding-top: 2.25em;
+    box-sizing: border-box;
+    color: #fff; }
   .reminder:hover, .reminder:focus-within {
     opacity: 1;
     transform: scale(1.02); }
-    .reminder:hover a, .reminder:focus-within a {
+    .reminder:hover a.clickable-wrap, .reminder:focus-within a.clickable-wrap {
       color: #FF4D61; }
+    .reminder:hover .overlay, .reminder:focus-within .overlay {
+      opacity: 1;
+      color: rgba(0, 0, 0, 0.2); }
+  .reminder.finished {
+    transform: scale(0.9); }
+    .reminder.finished .maininfo {
+      background: #7dff7d;
+      color: black; }
+    .reminder.finished .metainfo {
+      background: #c8ffc8; }
+    .reminder.finished:hover, .reminder.finished:focus, .reminder.finished:focus-within {
+      opacity: 0.25; }
   .reminder.hide {
     margin: 0;
     padding: 0; }

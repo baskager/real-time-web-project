@@ -1,7 +1,7 @@
 .card-caroussel {
   &.scroll-horizontal {
-    height: 29em;
-    overflow-y: scroll;
+    height: 29.2em;
+    overflow-y: auto;
     padding-bottom: 2em;
   }
 }
@@ -20,12 +20,45 @@
   a {
     color: $link-hover-color;   
   }
+  .overlay {
+    position: absolute;
+    top: 0;
+    margin: 0.5em 0;
+    opacity: 0;
+    display: block;
+    width: calc(100% - 0.5em);
+    font-size: 2em;
+    line-height: 1em;
+    cursor: pointer;
+    text-align: center;
+    transition: .4s ease;
+    padding-top: 2.25em;
+    box-sizing: border-box;
+    color: #fff;
+  }
 
   &:hover, &:focus-within {
     opacity: 1;
     transform: scale(1.02);
-    a {
+    a.clickable-wrap {
       color: $link-color;
+    }
+    .overlay {
+      opacity: 1;
+      color: $subtle-hint-color;
+    }
+  }
+  &.finished {
+    transform: scale(0.9);
+    .maininfo {
+      background: rgba(125,255, 125,1);
+      color: black;
+    }
+    .metainfo {
+      background: rgba(200,255, 200,1);
+    }
+    &:hover, &:focus, &:focus-within {
+      opacity: 0.25;
     }
   }
   &.hide {

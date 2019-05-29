@@ -1,5 +1,5 @@
 <li class="card reminder searchable" tabIndex="-1">
-    <a href='/api/finish/{{_key}}' class='clickable-wrap flex' id="cardUrl">
+    <a href='#{{_key}}' class='clickable-wrap flex' id="cardUrl">
         <div class="maininfo">
             <h3 id="title">{{title}}</h3>
         </div>
@@ -17,5 +17,6 @@
                 {{/if}}
             </div>
         </div>
+        <a class="overlay"><span id="overlayText">click to finish</span></a>
     </a>
 </li>

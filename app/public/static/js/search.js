@@ -112,8 +112,7 @@
             // When a user starts typing, automatically focus on the search input box
             if ((key > 63 && key < 90 ||
                 key === 8 && input.value != "" ||
-                key > 47 && key < 58) &&
-                !(event.ctrlKey && key === 82) ) {
+                key > 47 && key < 58)) {
                 input.focus();
             }
         // }
