@@ -46,7 +46,9 @@ module.exports = function(config, cache, environment, debug) {
           mentionedUserId: mentionedUserId,
           timestamp: moment(),
           client,
-          due
+          due,
+          deleted: null,
+          updated: null
       };
   
       return this.collection.save(doc, { returnNew: true });
@@ -63,8 +65,12 @@ module.exports = function(config, cache, environment, debug) {
      * @returns {Promise} Promise containing the query results
      **/
     getByUserId(client, id) {
-      debug("Getting reminder for user ID:", id);
-      return this.db.query(`FOR r IN reminder FILTER r.mentionedUserId == '${id}' && r.client == '${client}' SORT r.due DESC RETURN r`).then(
+      debug("Getting all reminders for user ID:", id);
+      return this.db.query(
+          `FOR r IN reminder \
+          FILTER r.mentionedUserId == '${id}' && r.client == '${client}' && r.deleted == null \
+          SORT r.due DESC RETURN r`
+        ).then(
         cursor => cursor.map(doc => doc)
       );
     }
@@ -76,19 +82,36 @@ module.exports = function(config, cache, environment, debug) {
      *
      * @returns {Promise} Promise containing the query results
      **/
-    getAll() {
-      debug("Getting all reminders from database");
-      return this.db.query("FOR r IN reminder SORT r.due DESC RETURN r").then(
-        cursor => cursor.map(doc => doc)
-      );
-    }
-
-    update(id) {
-      debug("Not implemented yet");
+    // getAll() {
+    //   debug("Getting all reminders from database");
+    //   return this.db.query("FOR r IN reminder SORT r.due DESC RETURN r").then(
+    //     cursor => cursor.map(doc => doc)
+    //   );
+    // }
+    /**
+     * Updates a reminder
+     *
+     * @since: 20-03-2019
+     * @author: Bas Kager
+     * 
+     * @param {string} id The oauth2 client
+     * @param {Object} reminder (partial) reminder opbject
+     *
+     * @returns {Promise} Promise containing the query results
+     **/
+    update(id, reminder) {
+      debug("Updating reminder:", id);
+      return this.collection.update(id, reminder);
     }
 
     delete(id) {
-      debug("Not implemented yet");
+      debug("Deleting reminder:", id);
+      return this.collection.update(id, {deleted: moment()});
+    }
+
+    hardDelete(id) {
+      debug("Hard deleting reminder:", id);
+      return this.collection.remove(id);
     }
 
     

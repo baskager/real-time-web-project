@@ -40,7 +40,7 @@
         <h3>Your reminders</h3>
         <ul class="center flex card-caroussel search-items-row scroll-horizontal" id="cardCarousel">
             <li class="card reminder searchable hide faded copy" tabIndex="-1" id="reminderCardCopy">
-                <a id="cardUrl" href="" class="clickable-wrap flex">
+                <a id="cardUrl" href="#" class="clickable-wrap flex">
                     <div class="maininfo">
                         <h3 id="title"></h3>
                     </div>
@@ -54,6 +54,7 @@
                             <span class="date"><b>due date:</b> <span id="dateDue">none</span></span>
                         </div>
                     </div>
+                    <a class="overlay"><span id="overlayText">click to finish</span></a>
                 </a>
             </li>  
             {{#each reminders}}

@@ -75,16 +75,9 @@ discord.loginBot();
 app.get("/", function(req, res) {
     if(req.session.user) {
         const user = req.session.user;
-
-        // auth.getUserById("discord", user.remoteId).then(
-        //     docs => {
-        //         if(! docs[0]) req.session.user = null;
-        //     },
-        //     err => debug(err)
-        // ); 
-
-        reminderDAO.getByUserId(req.session.user.client, req.session.user.remoteId).then(
+            reminderDAO.getByUserId(req.session.user.client, req.session.user.remoteId).then(
             docs => {
+                console.dir(docs);
                 res.render("home", {
                     user: user,
                     reminders: docs
@@ -114,6 +107,31 @@ app.get("/logout", function(req, res) {
     req.session.user = null;
     res.writeHead(302, {"Location": "/login"});
     res.end();
+});
+
+app.delete("/api/reminder/:reminderId", function(req, res) {
+    const reminderId = encodeURIComponent(req.params.reminderId);
+
+    if(!isNaN(reminderId)) {
+        if(!req.session.user) {
+            res.writeHead(401);
+            res.end();
+        } else {
+            reminderDAO.delete(reminderId).then(
+                () => {
+                    res.status(200).send();
+                },
+                err => {
+                    debug("Failed to save document:", err);
+                    res.status(500).send();
+                }
+            );
+        }
+    } else {
+        res.writeHead(400);
+        res.end();
+    }
+
 });
 
 app.get("/verify", function(req, res) {
@@ -164,21 +182,6 @@ io.on("connection", function(socket) {
         debug("test: ", sessionId, socket.id);
     });
 
-    // app.post("/webhook/create", function(req, res) {
-    //     reminderDAO.create(req.body.title, req.body.avatar, req.body.postedBy, "webhook", req.body.due).then(
-    //         meta => {
-    //             socket.emit("reminder", meta);
-    //             debug("Document saved:", meta._rev);
-    //             res.status(200).send();
-    //         },
-    //         err => {
-    //             debug("Failed to save document:", err);
-    //             res.status(500).send();
-    //         }
-    //     );
-
-    // });
-
     socket.on("disconnect", function(){
         debug("A user disconnected");
     });
@@ -210,12 +213,3 @@ io.on("connection", function(socket) {
 http.listen(port, function(){
     console.log("Server listening on port", port, "on", config.environment, "configuration. Secure is set to:", secure);
 });
-
-// reminderDAO.getAll().then(
-//     docs => {
-//         res.render("home", {
-//             reminders: docs
-//         });
-//     },
-//     err => debug(err)
-// ); 
