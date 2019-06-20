@@ -107,9 +107,7 @@ forever start server.js
 # Adding the discord bot to your server
 Edit the URI below by editing the client ID and visit it in your favourite browser
 
-`https://discordapp.com/api/oauth2/authorize?client_id=[[INSERT CLIENT ID HERE]]&scope=bot&permissions=84032
-
-https://discordapp.com/api/oauth2/authorize?client_id=557180806179848195&scope=bot&permissions=84032
+`https://discordapp.com/api/oauth2/authorize?client_id=[[INSERT CLIENT ID HERE]]&scope=bot&permissions=84032`
 
 # Creating a reminder 
 In your chat server, enter:
